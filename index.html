@@ -40,6 +40,7 @@
         #bloco-central{
             display: flex;
             flex-direction: column;
+            padding: 8vh 8vw;
             height: 70vh;
             margin: 5vh;
             background-color: rgb(255, 231, 163);
@@ -68,8 +69,29 @@
 
         #link-senha{
             padding: 20px 0;
-            font-size: 1.2em;
+            font-size: 1.0em;
             align-self: center;
+        }
+
+        .grupo-campo{
+            margin: 5vh 0;
+            display: flex;
+            height: 10vh;
+        }
+        .icone{
+            display: block;
+            background-color: lightgray;
+            height: 100%;
+            width: 50px;
+            border-radius: 10px 0px 0px 10px;
+            border: solid 1px rgb(180, 180, 180);
+        }
+
+        .entrada-dados{
+            height: 100%;
+            border-radius: 0px 10px 10px 0px;
+            border: solid 1px rgb(180, 180, 180);
+            flex-grow: ;
         }
 
     </style>
@@ -84,7 +106,18 @@
         </div>
         <div id="bloco-central">
             <div id="campos">
-                
+                <div id="usuario" class="grupo-campo">
+                    <div class="icone">
+                        <img src="" alt="">
+                    </div>
+                    <input class="entrada-dados" type="text">
+                </div>
+                <div id="senha" class="grupo-campo">
+                    <div class="icone">
+                        <img src="" alt="">
+                    </div>
+                    <input class="entrada-dados" type="text">
+                </div>
             </div>
             <div id="botao-entrar">
                 <a href="" class="botao forma">Entrar</a>
