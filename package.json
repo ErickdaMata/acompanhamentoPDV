@@ -1,0 +1,19 @@
+{
+  "name": "acompanhamentopdv",
+  "version": "0.1.0",
+  "description": "Projeto PWA para acompanhamento de PDV por relatório em texto incorporado.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErickdaMata/acompanhamentoPDV.git"
+  },
+  "author": "Erick da Mata",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErickdaMata/acompanhamentoPDV/issues"
+  },
+  "homepage": "https://github.com/ErickdaMata/acompanhamentoPDV#readme"
+}
