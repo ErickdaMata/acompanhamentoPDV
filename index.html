@@ -29,7 +29,7 @@
 
         .titulo{
             margin: 0;
-            font-size: 2em;
+            font-size: 5.5vw;
             font-weight: 700;
             color:brown;
             align-self: flex-end;
@@ -37,7 +37,7 @@
 
         .versao{
             margin: 0;
-            font-size: 1.0em;
+            font-size: 3.0vw;
             font-weight: 100;
             color: maroon;
             font-style: italic;
@@ -47,11 +47,11 @@
         #bloco-central{
             display: flex;
             margin: 5vh;
-            padding: 8vh 8vw;
-            height: 70vh;
+            padding: 8vh 15vw;
             flex-direction: column;
             background-color: rgb(255, 231, 163);
             border: solid 5px rgb(255, 213, 134);
+            align-self: center;
         }
 
         #botao-entrar{
@@ -62,9 +62,6 @@
             font-size: 1.8em;
             text-align: center;
             text-decoration: none;
-        }
-
-        .forma{
             display: block;
             padding: 10px 30px;
             width: 100%;
@@ -74,11 +71,6 @@
             box-sizing: border-box;
         }
 
-        #link-senha{
-            padding: 20px 0;
-            font-size: 1.0em;
-            align-self: center;
-        }
 
         .grupo-campo{
             display: flex;
@@ -109,8 +101,30 @@
 
         .grupo-campo img{
             padding: 10px;
+            max-width: 100%;
         }
 
+        #link-senha{
+            padding: 20px 0;
+            font-size: 2.7vw;
+            align-self: center;
+        }
+
+        @media (min-width: 800px){
+            .titulo{
+                font-size: 44px;
+            }
+            .versao{
+                font-size: 24px;
+            }
+        }
+
+        @media (min-width: 600px){
+            #link-senha{
+                font-size: 16px;
+            }
+        }
+        
     </style>
     <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
     <!-- <script src='main.js'></script> -->
