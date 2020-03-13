@@ -6,14 +6,19 @@
     <title>Acompanhamento PDV 0.1</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <style>
+        *{
+            /* border: solid 0.1px #EEE; */
+            box-sizing: border-box;
+        }
+
         body{
             background-color: bisque;
         }
 
         #organizacao{
             display: flex;
+            padding: 10vh 10vw;
             flex-direction: column;
-            padding: 8vw;
         }
 
         #cabecalho{
@@ -22,27 +27,29 @@
             align-self: center;
         }
 
-        h1{
-            margin: 10px 0 0 0;
+        .titulo{
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
             color:brown;
             align-self: flex-end;
         }
 
-        h2{
+        .versao{
             margin: 0;
-            color: maroon;
             font-size: 1.0em;
             font-weight: 100;
+            color: maroon;
             font-style: italic;
             align-self: flex-end;
         }
 
         #bloco-central{
             display: flex;
-            flex-direction: column;
+            margin: 5vh;
             padding: 8vh 8vw;
             height: 70vh;
-            margin: 5vh;
+            flex-direction: column;
             background-color: rgb(255, 231, 163);
             border: solid 5px rgb(255, 213, 134);
         }
@@ -52,15 +59,15 @@
         }
 
         .botao{
+            font-size: 1.8em;
             text-align: center;
             text-decoration: none;
-            font-size: 1.8em;
         }
 
         .forma{
-            width: 100%;
             display: block;
             padding: 10px 30px;
+            width: 100%;
             border-radius: 10px;
             color: #fff;
             background-color: orange;
@@ -74,24 +81,34 @@
         }
 
         .grupo-campo{
-            margin: 5vh 0;
             display: flex;
-            height: 10vh;
+            margin: 14px 0;
+            height: 40px;
         }
+
         .icone{
             display: block;
-            background-color: lightgray;
             height: 100%;
-            width: 50px;
+            width: 40px;
+            min-width: 40px;
+            border-left: solid 1px rgb(180, 180, 180);
+            border-top: solid 1px rgb(180, 180, 180);
+            border-bottom: solid 1px rgb(180, 180, 180);
             border-radius: 10px 0px 0px 10px;
-            border: solid 1px rgb(180, 180, 180);
+            background-color: lightgray;
         }
 
         .entrada-dados{
+            min-width: 160px;
+            padding: 5px;
             height: 100%;
-            border-radius: 0px 10px 10px 0px;
             border: solid 1px rgb(180, 180, 180);
-            flex-grow: ;
+            border-radius: 0px 10px 10px 0px;
+            flex-grow: 1;
+        }
+
+        .grupo-campo img{
+            padding: 10px;
         }
 
     </style>
@@ -101,22 +118,23 @@
 <body>
     <div id="organizacao">
         <div id="cabecalho">
-            <h1>Acompanhamento de PDV</h1>
-            <h2>Versão 1.0.0</h2>
+            <label class="titulo">Acompanhamento de PDV</label>
+            <label class="versao">Versão 1.0.0</label>
         </div>
         <div id="bloco-central">
             <div id="campos">
-                <div id="usuario" class="grupo-campo">
+                <div class="grupo-campo">
                     <div class="icone">
-                        <img src="" alt="">
+                        <img src="./src/img/usuario.png" alt="">
                     </div>
-                    <input class="entrada-dados" type="text">
+                    <input id="usuario" class="entrada-dados" type="text" placeholder="Identificação">
+                    
                 </div>
-                <div id="senha" class="grupo-campo">
-                    <div class="icone">
-                        <img src="" alt="">
-                    </div>
-                    <input class="entrada-dados" type="text">
+                <div class="grupo-campo">
+                <div class="icone">
+                    <img src="./src/img/pass.png" alt="">
+                </div>
+                <input id="senha" class="entrada-dados" type="password" placeholder="digite sua senha">
                 </div>
             </div>
             <div id="botao-entrar">
