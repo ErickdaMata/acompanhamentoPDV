@@ -47,7 +47,8 @@
         #bloco-central{
             display: flex;
             margin: 5vh;
-            padding: 8vh 15vw;
+            padding: 8vh 10vw;
+            max-width: 420px;
             flex-direction: column;
             background-color: rgb(255, 231, 163);
             border: solid 5px rgb(255, 213, 134);
@@ -110,12 +111,15 @@
             align-self: center;
         }
 
-        @media (min-width: 800px){
+        @media (min-width: 700px){
             .titulo{
-                font-size: 44px;
+                font-size: 38.5px;
             }
             .versao{
-                font-size: 24px;
+                font-size: 21px;
+            }
+            #bloco-central{
+                padding: 52px 70px;
             }
         }
 
@@ -133,24 +137,26 @@
     <div id="organizacao">
         <div id="cabecalho">
             <label class="titulo">Acompanhamento de PDV</label>
-            <label class="versao">Versão 1.0.0</label>
+            <label class="versao">Versão 0.1.0</label>
         </div>
         <div id="bloco-central">
-            <div id="campos">
+            <form id="campos">
                 <div class="grupo-campo">
                     <div class="icone">
                         <img src="./src/img/usuario.png" alt="">
                     </div>
-                    <input id="usuario" class="entrada-dados" type="text" placeholder="Identificação">
+                    <input id="usuario" class="entrada-dados"
+                        name="usuario" type="text" placeholder="Identificação">
                     
                 </div>
                 <div class="grupo-campo">
                 <div class="icone">
                     <img src="./src/img/pass.png" alt="">
                 </div>
-                <input id="senha" class="entrada-dados" type="password" placeholder="digite sua senha">
+                    <input id="senha" class="entrada-dados" 
+                        name="senha" type="password" placeholder="digite sua senha">
                 </div>
-            </div>
+            </form>
             <div id="botao-entrar">
                 <a href="" class="botao forma">Entrar</a>
             </div>
