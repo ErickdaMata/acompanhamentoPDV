@@ -4,7 +4,7 @@
   "description": "Projeto PWA para acompanhamento de PDV por relatório em texto incorporado.",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js http-server"
   },
   "repository": {
     "type": "git",
