@@ -1,21 +1,28 @@
+const eventoLoginCarregou = new Event('loginCarregou')
+const eventoRelatorioCarregou = new Event('relatorioCarregou')
+
+document.addEventListener('loginCarregou', scriptLogin)
+document.addEventListener('relatorioCarregou', scriptRelatorio)
+
 document.addEventListener("DOMContentLoaded", () =>{
-    navegacao('login.html')
+    construirHTML('/nav/login.html', eventoLoginCarregou)
 })
 
-
-function navegacao(url) {
+function construirHTML(url, evento) {
+    console.log(evento)
     fetch(url)
         .then(resp => resp.text())
         .then(html => {
             document.querySelector('body').innerHTML = html
-            return document.loginForm
         })
-        .then(form => eventoLogin(form))
+        .then(() => {            
+            document.dispatchEvent(evento)
+        })
         .catch(e => console.log(e))
-    //eventoLogin()
 }
 
-function eventoLogin(formLogin) {
+function scriptLogin() {
+    const formLogin = document.formLogin
     formLogin.onsubmit = async evento => {
         evento.preventDefault()
     
@@ -32,8 +39,11 @@ function eventoLogin(formLogin) {
             .then(sessao => {
                 console.log(sessao)
                 if(sessao.estado === "true") {
-                    alert("Login validado com sucesso!")
-                    //exibirRelatorio(sessao.cliente)
+                    alert("Usuário OK")
+                    construirHTML('/nav/relatorio.html', eventoRelatorioCarregou)
+                    document.addEventListener('relatorioCarregou', () => {
+                        exibirRelatorio(sessao.cliente)
+                    })
                 } 
                 if(sessao.estado === "!user"){
                     alert("Usuário ou senha inválidos.")
@@ -45,8 +55,18 @@ function eventoLogin(formLogin) {
     }
 }
 
-function exibirRelatorio(cliente){
-    cliente.relatorio 
-    cliente.sincronizacao
-    cliente.total
+function scriptRelatorio() {
+    document.getElementById('icone-sair').addEventListener('click', logout)
 }
+
+function logout(){
+    alert("sai")
+}
+
+function exibirRelatorio(cliente){
+    const campoRelatorio = document.getElementById('relatorio')
+    campoRelatorio.innerHTML = cliente.relatorio
+    /* cliente.sincronizacao
+    cliente.total */
+}
+

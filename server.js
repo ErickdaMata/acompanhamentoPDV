@@ -12,32 +12,64 @@ app.use(bodyParser.json())
 app.post('/login', (req, res) => {
     const usuario = (req.body.usuario)   
     const senha = (req.body.senha)
-    const sessao = {}
-    sessao.estado = validarLogin (usuario, senha)
+    const sessao = criarSessao(usuario, senha).then(s => s)
+    console.log("SESSAO", sessao, Date.now())
     res.send(sessao)
 })
 
+async function criarSessao(usuario, senha){
+    const estado = await validarLogin(usuario, senha).then(e => e)
+    const cliente = "await retornarCliente(usuario)"
+    console.log('criou o cliente', Date.now())
+    const sessao = {
+        estado,
+        cliente
+    }
+    console.log('retornou retornou sessão', Date.now())
+    console.log('sessao', sessao)
+    return sessao
+}
+
+function retornarCliente(codigoCliente) {
+    const relatorio = retornarTexto('abc')
+    console.log('inseriu texto no objeto', Date.now())
+    const sincronizacao = ''
+    const total = ''
+    const cliente = {
+        relatorio,
+        sincronizacao,
+        total
+    }
+    console.log('retornou retornou cliente', Date.now())
+    return cliente
+}
+
+function retornarTexto(usuario) {
+    
+    const caminho = __dirname + `/relatorios/${usuario}.txt`
+    
+    return fs.readFile(caminho, 'utf-8', (err, conteudo) => {
+        if(err) {
+            console.log(err)
+        } else {
+            console.log('LEU O TEXTO', Date.now())
+            return conteudo
+        }
+    })
+}
+
 function validarLogin(usuario, senha){
-    if((usuario === '123') && (senha === 'abc')){
-        console.log("usuario ok")
-        return 'true'
-    }
-    else {
-        console.log("usuario negado")
-        return '!user'
-    }
+    return new Promise((resolve, reject) => {
+        if((usuario === '123') && (senha === 'abc')){
+            resolve('true')
+            console.log("usuario ok")
+        }
+        else {
+            resolve('!user')
+            console.log("usuario negado")
+        }
+    })
 }
-
-function retornarTexto() {
-
-    caminho = __dirname + '/relatorios/relatorio.txt'
-
-    fs.readFile(caminho, 'utf-8', (err, conteudo) => {
-    const texto = conteudo
-    return texto
-})
-}
-
 
 const porta = 8080
 app.listen(porta, () => console.log(`Executando na porta ${porta}`))
