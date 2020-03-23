@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 })
 
 function construirHTML(url, evento) {
-    console.log(evento)
+    //console.log(evento)
     fetch(url)
         .then(resp => resp.text())
         .then(html => {
@@ -65,8 +65,10 @@ function logout(){
 
 function exibirRelatorio(cliente){
     const campoRelatorio = document.getElementById('relatorio')
+    const campoAtualizacao = document.getElementById('atualizacao')
+    const campoSaldo = document.getElementById('saldo')
     campoRelatorio.innerHTML = cliente.relatorio
-    /* cliente.sincronizacao
-    cliente.total */
+    campoAtualizacao.innerHTML = cliente.atualizacao
+    campoSaldo.innerHTML = cliente.saldo
 }
 

@@ -191,6 +191,7 @@ body{
 }
 
 #atualizacao{
+    font-style: italic;
     font-size: 3vw;
     grid-column-start: 1;
     grid-column-end: 2;
