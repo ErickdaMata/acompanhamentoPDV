@@ -1,24 +1,9 @@
-const bodyParser = require('body-parser')
-const express = require('express')
-const app = express()
 const fs = require('fs')
 
-app.use(express.static('./app'))
-app.use(bodyParser.urlencoded({ extended: true}))
-app.use(bodyParser.json())
-
-//app.get('/teste', (req, res) => {res.send('Ok')})
-
-app.post('/login', (req, res) => {
-    const usuario = (req.body.usuario)   
-    const senha = (req.body.senha)
-    criarSessao(usuario, senha).then(sessao => res.send(sessao))
-})
-
-async function criarSessao(usuario, senha){
+module.exports = async function criarSessao(usuario, senha){
     try {
         const estado = await validarLogin(usuario, senha).then(estado => estado)
-        const cliente = await retornarCliente(usuario).then(cliente => cliente)
+        const cliente = await recuperarCliente(usuario).then(cliente => cliente)
         const sessao = {
             estado,
             cliente
@@ -26,12 +11,13 @@ async function criarSessao(usuario, senha){
         return sessao
     } catch (erro) {
         console.log(erro)
+        return {}
     }
 }
 
-async function retornarCliente(codigoCliente) {
+async function recuperarCliente(codigoCliente) {
     try {
-        const relatorio = await retornarTexto(codigoCliente)
+        const relatorio = await recuperarRelatorio(codigoCliente)
         const atualizacao = 'Posição de saldos às 13:32'
         const saldo = 'R$ 2.708,45'
         const cliente = {
@@ -45,8 +31,9 @@ async function retornarCliente(codigoCliente) {
     }
 }
 
-function retornarTexto(usuario) {
+function recuperarRelatorio(usuario) {
     return new Promise((resolve, reject) => {
+        usuario = 'abc'
         const caminho = __dirname + `/relatorios/${usuario}.txt`
         
         return fs.readFile(caminho, 'utf-8', (err, conteudo) => {
@@ -71,6 +58,3 @@ function validarLogin(usuario, senha){
         }
     })
 }
-
-const porta = 8080
-app.listen(porta, () => console.log(`Executando na porta ${porta}`))

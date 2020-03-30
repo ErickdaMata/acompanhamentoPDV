@@ -71,6 +71,7 @@ body{
     grid-row-start: 2;
     grid-row-end: 3;
 }
+
 #saldo{
     font-size: 7vw;
     text-align: end;

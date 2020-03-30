@@ -1,3 +1,7 @@
+const verboso = true
+const _html_login = '/assets/html/login.html'
+const _html_relatorio = '/assets/html/relatorio.html'
+
 const eventoLoginCarregou = new Event('loginCarregou')
 const eventoRelatorioCarregou = new Event('relatorioCarregou')
 
@@ -5,25 +9,29 @@ document.addEventListener('loginCarregou', scriptLogin)
 document.addEventListener('relatorioCarregou', scriptRelatorio)
 
 document.addEventListener("DOMContentLoaded", () =>{
-    construirHTML('/nav/login.html', eventoLoginCarregou)
+    construirHTML(_html_login, eventoLoginCarregou)
 })
 
 function construirHTML(url, evento) {
-    //console.log(evento)
+    v("contruir:"+ url)
     fetch(url)
         .then(resp => resp.text())
         .then(html => {
             document.querySelector('body').innerHTML = html
+            v('::finalizou html::')
         })
-        .then(() => {            
+        .then(() => {
             document.dispatchEvent(evento)
+            v('disparou evento: '+ evento.type) 
         })
-        .catch(e => console.log(e))
+        .catch(e => console.error(e))
 }
 
 function scriptLogin() {
+    v('iniciou script: scriptLogin')
     const formLogin = document.formLogin
     formLogin.onsubmit = async evento => {
+        v('ocorreu evento "onsubmit" em formLogin')
         evento.preventDefault()
     
         const formLogin = evento.target
@@ -35,12 +43,14 @@ function scriptLogin() {
         }
     
         fetch(formLogin.action, opcoes)
-            .then(resposta => resposta.json())
+            .then(resposta => {
+                v(resposta.json())
+                return resposta.json()})
             .then(sessao => {
-                console.log(sessao)
+                v(sessao)
                 if(sessao.estado === "true") {
                     alert("Usuário OK")
-                    construirHTML('/nav/relatorio.html', eventoRelatorioCarregou)
+                    construirHTML(_html_relatorio, eventoRelatorioCarregou)
                     document.addEventListener('relatorioCarregou', () => {
                         exibirRelatorio(sessao.cliente)
                     })
@@ -50,7 +60,7 @@ function scriptLogin() {
                 }
             })
             .catch(erro => {
-                console.log(erro)
+                console.error(erro)
             })
     }
 }
@@ -72,3 +82,6 @@ function exibirRelatorio(cliente){
     campoSaldo.innerHTML = cliente.saldo
 }
 
+function v(texto){
+    if(verboso) console.log(texto)
+}
