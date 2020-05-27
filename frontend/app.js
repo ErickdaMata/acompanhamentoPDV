@@ -29,6 +29,12 @@ function construirHTML(url, evento) {
 
 function scriptLogin() {
     v('iniciou script: scriptLogin')
+    document.getElementById('link-senha').addEventListener('click', (e) =>{
+        alert(`Seu suporte operacional pode ajudar! 
+
+        Para alteração ou cadastramento de senha de acesso, entre em contato conosco pelo número (21) 2234-5678.`)
+    })
+
     const formLogin = document.formLogin
     formLogin.onsubmit = async evento => {
         v('ocorreu evento "onsubmit" em formLogin')
@@ -44,15 +50,15 @@ function scriptLogin() {
     
         fetch(formLogin.action, opcoes)
             .then(resposta => {
-                v(resposta.json())
+                v(resposta)
                 return resposta.json()})
             .then(sessao => {
                 v(sessao)
                 if(sessao.estado === "true") {
-                    alert("Usuário OK")
+                    //alert("Usuário OK")
                     construirHTML(_html_relatorio, eventoRelatorioCarregou)
                     document.addEventListener('relatorioCarregou', () => {
-                        exibirRelatorio(sessao.cliente)
+                        exibirRelatorio(sessao.relatorio)
                     })
                 } 
                 if(sessao.estado === "!user"){
@@ -67,19 +73,24 @@ function scriptLogin() {
 
 function scriptRelatorio() {
     document.getElementById('icone-sair').addEventListener('click', logout)
+    document.getElementById('relatorio').addEventListener('dblclick', toogleView)
+}
+
+function toogleView(){
+    const barra = document.getElementById('barra-superior')
+    if (barra.style.display === 'none' )
+        barra.style.display = 'flex'
+    else
+        barra.style.display = 'none'
 }
 
 function logout(){
     alert("sai")
 }
 
-function exibirRelatorio(cliente){
+function exibirRelatorio(relatorio){
     const campoRelatorio = document.getElementById('relatorio')
-    const campoAtualizacao = document.getElementById('atualizacao')
-    const campoSaldo = document.getElementById('saldo')
-    campoRelatorio.innerHTML = cliente.relatorio
-    campoAtualizacao.innerHTML = cliente.atualizacao
-    campoSaldo.innerHTML = cliente.saldo
+    campoRelatorio.innerHTML = relatorio
 }
 
 function v(texto){

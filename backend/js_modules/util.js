@@ -1,12 +1,15 @@
-const fs = require('fs')
+const recuperarRelatorio = require('./recuperarRelatorio')
 
 module.exports = async function criarSessao(usuario, senha){
     try {
         const estado = await validarLogin(usuario, senha).then(estado => estado)
-        const cliente = await recuperarCliente(usuario).then(cliente => cliente)
+        let relatorio = ''
+        if(estado === 'true'){
+            relatorio = await recuperarRelatorio(usuario).then(relatorio => relatorio)
+        }
         const sessao = {
             estado,
-            cliente
+            relatorio
         }
         return sessao
     } catch (erro) {
@@ -15,39 +18,9 @@ module.exports = async function criarSessao(usuario, senha){
     }
 }
 
-async function recuperarCliente(codigoCliente) {
-    try {
-        const relatorio = await recuperarRelatorio(codigoCliente)
-        const atualizacao = 'Posição de saldos às 13:32'
-        const saldo = 'R$ 2.708,45'
-        const cliente = {
-            relatorio,
-            atualizacao,
-            saldo
-        }
-        return cliente
-    } catch (erro) {
-        console.log(erro)
-    }
-}
-
-function recuperarRelatorio(usuario) {
-    return new Promise((resolve, reject) => {
-        usuario = 'abc'
-        const caminho = __dirname + `/relatorios/${usuario}.txt`
-        
-        return fs.readFile(caminho, 'utf-8', (err, conteudo) => {
-            if(err) {
-                reject(err)
-            } else {
-                resolve(conteudo)
-            }
-        })
-    })
-}
-
 function validarLogin(usuario, senha){
     return new Promise((resolve, reject) => {
+        console.log(`Usuario ${usuario} | senha ${senha}`)
         if((usuario === '123') && (senha === 'abc')){
             resolve('true')
             console.log("usuario ok")
