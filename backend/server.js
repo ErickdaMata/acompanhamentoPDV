@@ -29,6 +29,6 @@ app.post('/login', async (req, res) => {
     res.send(sessao)
 })
 
-//app.get()
+app.get()
 
 app.listen(porta, () => console.log(`Executando na porta ${porta}`))
