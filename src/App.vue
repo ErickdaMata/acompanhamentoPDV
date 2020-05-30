@@ -1,27 +1,27 @@
 <template>
   <div id="app">
-    <Login msg="Welcome to Your Vue.js App"/>
+    <router-view />
+    <!-- <Login msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue'
+/* import Login from './components/Login.vue'
 
 export default {
   name: 'App',
   components: {
     Login
   }
-}
+} */
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+*{
+  border: 1x solid white;
+}
+body{
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(234,251,255,1) 59%);
 }
 </style>

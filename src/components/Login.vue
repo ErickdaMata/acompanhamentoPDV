@@ -8,22 +8,24 @@
           <form id="campos" name="formLogin" action="login" method="post">
               <div class="grupo-campo">
                   <div class="icone">
-                      <img src="assets/img/usuario.png" alt="">
+                      <img src="../assets/img/usuario.png" alt="">
                   </div>
-                  <input id="usuario" class="entrada-dados"
+                  <input id="usuario" class="entrada-dados" v-model="id"
                       name="usuario" type="text" placeholder="Identificação">
-                  
               </div>
               <div class="grupo-campo">
               <div class="icone">
-                  <img src="assets/img/pass.png" alt="">
+                  <img src="../assets/img/pass.png" alt="">
               </div>
-                  <input id="senha" class="entrada-dados" 
+                  <input id="senha" class="entrada-dados" v-model="senha"
                       name="senha" type="password" placeholder="digite sua senha">
               </div>
-              <div id="botao-entrar">
+              <button id="botao-entrar" class="botao forma" @click.prevent="login">
+                    {{ labelLogin }}
+              </button>
+              <!-- <div id="botao-entrar">
                   <button class="botao forma">Entrar</button>
-              </div>
+              </div> -->
           </form>
           <div id="link-senha" @click="esqueceuSenha">
               <a href="">Esqueci ou não possuo uma senha</a>
@@ -33,14 +35,23 @@
 </template>
 
 <script>
+//import axios from 'axios'
+
 export default {
   data(){
     return {
-      titulo: "Acompanhamento de PDV",
-      versao: "Versão 0.1.0"
+        titulo: "Acompanhamento de PDV",
+        versao: "Versão 0.1.0",
+        id: '',
+        senha: '',
+        labelLogin: "Entrar"
       }
   },
   methods:{
+    login(){
+        console.log('id:' + this.id + ' e senha: ' + this.senha)
+        this.$router.push({path:'/relatorios'})
+    },
     esqueceuSenha(){
       return alert(`Seu suporte operacional pode ajudar! 
 
@@ -56,6 +67,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/*
+:root{ 
+    --primaria-escura: #89cff0ff;
+    --primaria-clara: #d6edffff;
+    --botao-clara: #00a7e1ff;
+    --botao-escura: hsla(207, 86%, 76%, 1);
+    --letra-clara: #f6f7ebff;
+    --letra-escura: #212738ff;
+    --warning: #f9c784ff;
+    --success: #5abfa6ff;
+    --error: #f97068ff; 
+}*/
+
 *{
     /* border: solid 0.1px #333; */
     box-sizing: border-box;
@@ -63,7 +87,6 @@ export default {
 
 body{
     min-height: -webkit-fill-available;
-    background-color: bisque;
     margin: 0;
     padding: 0;
     display: flex;
@@ -88,7 +111,7 @@ body{
     margin: 0;
     font-size: 5.5vw;
     font-weight: 700;
-    color:brown;
+    color: #1C77C3;
     align-self: flex-end;
 }
 
@@ -105,8 +128,8 @@ body{
     margin: 5vh;
     padding: 8vh 10vw;
     flex-direction: column;
-    background-color: rgb(255, 231, 163);
-    border: solid 5px rgb(255, 213, 134);
+    background-color:#D6EDFF;
+    border: solid 5px #89CFF0;
     display: flex;
     align-self: center;
 }
@@ -123,8 +146,9 @@ body{
     padding: 10px 30px;
     width: 100%;
     border-radius: 10px;
-    color: #fff;
-    background-color: orange;
+    color: #F6F7EB;
+    font-weight: 700;
+    background-color: #00a7e1ff;
     box-sizing: border-box;
 }
 
@@ -163,6 +187,7 @@ body{
 #link-senha{
     padding: 20px 0;
     font-size: 2.7vw;
+    color: #1C77C3;
     align-self: center;
 }
 
