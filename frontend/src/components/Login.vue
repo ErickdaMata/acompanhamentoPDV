@@ -10,14 +10,14 @@
                   <div class="icone">
                       <img src="../assets/img/usuario.png" alt="">
                   </div>
-                  <input id="usuario" class="entrada-dados" v-model="id"
+                  <input id="usuario" class="entrada-dados" v-model="usuario.user"
                       name="usuario" type="text" placeholder="Identificação">
               </div>
               <div class="grupo-campo">
               <div class="icone">
                   <img src="../assets/img/pass.png" alt="">
               </div>
-                  <input id="senha" class="entrada-dados" v-model="senha"
+                  <input id="senha" class="entrada-dados" v-model="usuario.senha"
                       name="senha" type="password" placeholder="digite sua senha">
               </div>
               <button id="botao-entrar" class="botao forma" @click.prevent="login">
@@ -35,21 +35,23 @@
 </template>
 
 <script>
-//import axios from 'axios'
+//import {baseURL} from '@/global'
+import axios from 'axios'
 
 export default {
   data(){
     return {
         titulo: "Acompanhamento de PDV",
         versao: "Versão 0.1.0",
-        id: '',
-        senha: '',
-        labelLogin: "Entrar"
+        labelLogin: "Entrar",
+        usuario: {}
       }
   },
   methods:{
     login(){
-        console.log('id:' + this.id + ' e senha: ' + this.senha)
+        axios.post(`http://localhost:9000/`, this.usuario)
+            .then(resp => console.log(resp))
+            .catch(err => console.log('ERRO: '+ err.response.data))
         this.$router.push({path:'/relatorios'})
     },
     esqueceuSenha(){

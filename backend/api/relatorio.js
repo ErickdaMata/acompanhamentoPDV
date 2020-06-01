@@ -1,4 +1,12 @@
-const fs = require('fs')
+module.exports = app => {
+    const buscarFTP = (req, res)=> {
+        res.send('Deu certo')
+    }
+
+    return {buscarFTP}
+}
+
+/* const fs = require('fs')
 const _path = require('path')
 
 module.exports = async function recuperarRelatorio(usuario) {
@@ -14,4 +22,4 @@ module.exports = async function recuperarRelatorio(usuario) {
             }
         })
     })
-}
+} */

@@ -1,5 +1,5 @@
 {
-  "name": "acompanhamento-pdv",
+  "name": "acompanhamento-pdv-frontend",
   "version": "0.1.0",
   "private": true,
   "description": "Projeto PWA para acompanhamento de PDV por relatório em texto incorporado.",
