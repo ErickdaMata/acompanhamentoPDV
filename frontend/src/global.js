@@ -3,6 +3,6 @@ const userKey = '__acompanhamentoPDV_user'
 
 //URL do backend, evitar localhost em desenvolvimento.
 //Servidor possui módulo http-server para rede local
-const baseURL = 'http://192.168.0.15:9000'
+const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api'
 
 module.exports = {baseURL, userKey}

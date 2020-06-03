@@ -4,6 +4,8 @@
  * 
  *  -------- Arquivo importado pelo Consign  --------
 */
+const axios = require('axios')
+axios.defaults.baseURL = 'https://pdv-estagio.firebaseio.com/'
 
 //Implementação da troca de informações com DB.
 

@@ -13,6 +13,7 @@ const porta = 9000
 //Modulos do Node
 const app = require('express')()
 const consign = require('consign')
+ 
 const db = require('./config/db')
 app.db = db
 
@@ -22,6 +23,8 @@ consign()
     .then('./config/middlewares.js')
     .then('./api')
     .then('./config/rotas.js')
-    .into(app)
+    .into(app) 
 
+module.exports = app
+    
 app.listen(porta, () => console.log(`Executando na porta ${porta}`))
