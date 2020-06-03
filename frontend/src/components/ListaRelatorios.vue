@@ -1,19 +1,26 @@
 <template>
   <div>
-      <ul class="lista">
-          <router-link tag="li" to="relatorios/1" 
-                class="item-lista">Empresa 1</router-link>
+        <ul class="lista">
+            <!-- Lista de empresas disponíveis -->
+            <router-link  v-for="(empresa, id) in empresas" :to="{path: 'relatorios/' + id}"
+                :key="empresa" tag="li" class="item-lista" >
+                {{ empresa }}
+            </router-link>
 
-          <router-link tag="li" to="relatorios/2" 
-                class="item-lista">Empresa 2</router-link>
-
-      </ul>
+        </ul>
   </div>
 </template>
 
 <script>
 export default {
-
+    props: {
+        empresas : {
+            type: Array,
+            default: function() {
+                return []
+            }
+        }
+    },
 }
 </script>
 

@@ -27,7 +27,7 @@
                   <button class="botao forma">Entrar</button>
               </div> -->
           </form>
-          <div id="link-senha" @click="esqueceuSenha">
+          <div id="link-senha" @click.prevent="esqueceuSenha">
               <a href="">Esqueci ou não possuo uma senha</a>
           </div>
       </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-//import {baseURL} from '@/global'
+import { baseURL, userKey } from '@/global'
 import axios from 'axios'
 
 export default {
@@ -44,15 +44,24 @@ export default {
         titulo: "Acompanhamento de PDV",
         versao: "Versão 0.1.0",
         labelLogin: "Entrar",
-        usuario: {}
+        usuario: {},
+        se: {}
       }
   },
   methods:{
     login(){
-        axios.post(`http://localhost:9000/`, this.usuario)
-            .then(resp => console.log(resp))
+        axios.post(baseURL, this.usuario)
+            .then(resp => {
+                if(resp.status == 201)
+                    //Retornar objeto data = {...payload, token}
+                    return resp.data
+                })
+            .then(sessao => {
+                this.$store.commit('salvarSessao', sessao)
+                localStorage.setItem(userKey, JSON.stringify(sessao))
+                this.$router.push({path:'/relatorios'})
+                })
             .catch(err => console.log('ERRO: '+ err.response.data))
-        this.$router.push({path:'/relatorios'})
     },
     esqueceuSenha(){
       return alert(`Seu suporte operacional pode ajudar! 

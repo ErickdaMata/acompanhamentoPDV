@@ -1,9 +1,17 @@
-module.exports = app => {
-    const buscarFTP = (req, res)=> {
-        res.send('Deu certo')
-    }
+//const servidor = require('serverFTP')
 
-    return {buscarFTP}
+module.exports = app => {
+    const buscarRelatorios = (req, res)=> {
+        const lista = {
+            empresas : [
+                {nome: 'XPTO', rel: 'texto do relatorio da empresa XPTO'},
+                {nome: 'Acme Ltda.', rel: 'texto do relatorio da empresa Acme'}
+            ]
+        }
+        res.send(lista)
+    } 
+
+    return {buscarRelatorios}
 }
 
 /* const fs = require('fs')

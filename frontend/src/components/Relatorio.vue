@@ -1,17 +1,25 @@
 <template>
     <div id="body-relatorio">
         <div id="bloco-relatorio">
-            <pre id="relatorio">
-            </pre>
+            <pre id="relatorio">{{ relatorios[id] }}</pre>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        relatorios : {
+            type: Array,
+            default: function() {
+                return []
+            }
+        }
+    },
     data(){
         return{
             titulo: 'Relatório de Caixas',
+            id: this.$route.params.id
         }
     }
 }

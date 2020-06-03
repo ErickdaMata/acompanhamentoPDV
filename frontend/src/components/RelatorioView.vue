@@ -5,25 +5,46 @@
             <img id="icone-sair" @click="sair"
                 src="../assets/img/sair.png" alt="[sair]">
         </div>
-        <router-view />
+        <!-- Será passado para o componente renderizado a lista de empresas -->
+        <router-view :empresas="empresasArray" :relatorios="relatoriosArray" />
     </div>
 </template>
 
 <script>
+import {baseURL, userKey} from '@/global'
+import {mapGetters} from 'vuex'
+import axios from 'axios'
+
 export default {
-    beforeRouteEnter(to, from, next){
-        const autenticado = false
-        autenticado? next() : next(false)
-    },
     data(){
         return{
             titulo: 'Relatórios',
+            empresasArray: [],
+            relatoriosArray: []
         }
     },
+    computed: 
+        mapGetters({
+            sessao: 'getSessao'
+        })
+    ,
     methods:{
         sair(){
+            //Limpa o armazenamento da sessão no navegador
+            localStorage.removeItem(userKey)
+            //Redireciona o usuário para a página inicial
             this.$router.push( {path: '/'} )
         }
+    },
+    //Método invocado antes da renderização pelo Vue
+    beforeMount(){
+        //Requisição para obter os relatórios disponíveis
+        axios.post(baseURL + '/relatorios', this.sessao)
+            .then(res => res.data)
+            .then(dados => dados.empresas.map(empresa => {
+                this.empresasArray.push(empresa.nome)
+                this.relatoriosArray.push(empresa.rel)
+            }))
     }
 
 }
@@ -35,6 +56,7 @@ export default {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    height: 95vh;
 }
 
 #barra-superior{

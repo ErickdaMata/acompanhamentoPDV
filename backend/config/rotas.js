@@ -19,5 +19,5 @@ module.exports = app => {
     //Rota de acesso aos relatórios
     app.route('/relatorios')
         .all(app.config.passport.authenticate())
-        .post(app.api.relatorio.buscarFTP)
+        .post(app.api.relatorio.buscarRelatorios)
 }
