@@ -3,6 +3,18 @@
     "short_name": "i9PDV",
     "icons": [
         {
+            "src": "/img/icons/maskable-icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/img/icons/maskable-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
             "src": "/img/icons/app-icon-48x48.png",
             "type": "image/png",
             "sizes": "48x48"

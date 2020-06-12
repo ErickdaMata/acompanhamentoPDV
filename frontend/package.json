@@ -1,6 +1,6 @@
 {
   "name": "acompanhamento-i9pdv",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Projeto PWA para acompanhamento de PDV por relatório em texto incorporado.",
   "scripts": {
@@ -20,7 +20,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "3.0.2",
     "vuex": "^3.4.0"
@@ -28,7 +27,6 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-plugin-pwa": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

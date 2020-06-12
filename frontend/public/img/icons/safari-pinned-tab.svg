@@ -1,0 +1,21 @@
+<svg width="40" height="48" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="42" height="50" id="canvas_background" fill="none"/>
+ </g>
+
+ <g>
+  <title>Layer 1</title>
+  <path id="svg_1" d="m38.434824,6.180857l-0.06387,40.3154l-32.12374,0l-0.0625,-4.12484l28.31139,-0.00001l0.06248,-36.18605l3.87624,-0.0045z" stroke="#000000" fill="#000000"/>
+  <rect fill="none" stroke="#000000" x="1.922028" y="1.85493" width="32.602726" height="40.410942" id="svg_23"/>
+  <rect class="st12" height="1.6" width="24.2" x="6.044329" y="10.990985" id="svg_9" fill="#000000"/>
+  <rect class="st12" height="1.6" width="24.2" x="6.10677" y="14.54099" id="svg_10" fill="#000000"/>
+  <rect class="st12" height="1.6" width="24.2" x="6.10677" y="17.84099" id="svg_11" fill="#000000"/>
+  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="21.04099" id="svg_13" fill="#000000"/>
+  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="24.34099" id="svg_14" fill="#000000"/>
+  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="27.64099" id="svg_16" fill="#000000"/>
+  <polyline fill="none" stroke="null" stroke-width="null" stroke-opacity="null" points="34.52232816815376,1.7550077438354492 34.52232816815376,1.7550077438354492 " id="svg_27" stroke-linecap="round"/>
+  <polyline fill="none" stroke-width="null" stroke-opacity="null" points="67.21582543849945,30.85732650756836 67.21582543849945,30.85732650756836 " id="svg_28" stroke-linecap="round" stroke="null"/>
+  <polyline fill="none" stroke-width="null" stroke-opacity="null" points="34.55656889081001,1.7207660675048828 34.55656889081001,1.7207660675048828 " id="svg_29" stroke-linecap="round" stroke="null"/>
+ </g>
+</svg>
