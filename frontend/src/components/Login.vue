@@ -20,34 +20,51 @@
                   <input id="senha" class="entrada-dados" v-model="usuario.senha"
                       name="senha" type="password" placeholder="digite sua senha">
               </div>
-              <button id="botao-entrar" class="botao forma" @click.prevent="login">
+              <!-- <button id="botao-entrar" class="botao forma" @click.prevent="login"> -->
+              <div class="my-2">
+                <v-btn id="botao-entrar" color="hsecondary" large
+                    @click.prevent="login">
                     {{ labelLogin }}
-              </button>
-              <!-- <div id="botao-entrar">
-                  <button class="botao forma">Entrar</button>
-              </div> -->
+                </v-btn>
+              </div>
+                    
+              <!-- </button> -->
           </form>
           <div id="link-senha" @click.prevent="esqueceuSenha">
               <a href="">Esqueci ou não possuo uma senha</a>
           </div>
       </div>
+    <v-overlay v-if="exibirMensagemSenha">
+        <MensagemSenha />
+    </v-overlay>
   </div>
 </template>
 
 <script>
-import { baseURL, userKey } from '@/global'
 import axios from 'axios'
+import {mapGetters} from 'vuex'
+import { baseURL, userKey } from '@/global'
+import MensagemSenha from './MensagemSenha'
 
-export default {
+export default { 
+  name: 'Login',
+  components: {MensagemSenha},
+  props: {
+    msg: String
+  },
   data(){
     return {
         titulo: "Acompanhamento de PDV",
         versao: "Versão 0.1.0",
         labelLogin: "Entrar",
-        usuario: {},
-        se: {}
+        usuario: {}
       }
   },
+  computed: 
+      mapGetters({
+          exibirMensagemSenha: 'getExibirMensagemSenha'
+      })
+  ,
   methods:{
     login(){
         axios.post(baseURL, this.usuario)
@@ -64,14 +81,11 @@ export default {
             .catch(err => console.log('ERRO: '+ err.response.data))
     },
     esqueceuSenha(){
-      return alert(`Seu suporte operacional pode ajudar! 
-
-        Para alteração ou cadastramento de senha de acesso, entre em contato conosco pelo número (21) 2234-5678.`)
+      this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
     }
   },
-  name: 'Login',
-  props: {
-    msg: String
+  beforeMount(){
+      console.log("STORE: Estado exibirMensagemSenha - ", this.exibirMensagemSenha)
   }
 }
 </script>

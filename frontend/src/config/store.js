@@ -7,10 +7,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         sessao: '',
+        exibirMensagemSenha: false
     },
     getters: {
         getSessao(state){
             return state.sessao
+        },
+        getExibirMensagemSenha(state){
+            //console.log("From STORE:", state.exibirMensagemSenha)
+            return state.exibirMensagemSenha
         }
     },
     mutations: {
@@ -20,6 +25,9 @@ export default new Vuex.Store({
                 axios.defaults.headers.common['Authorization'] = `bearer ${sessao.token}`
             else
                 delete axios.defaults.headers.common['Authorization']
+        },
+        comutarExibirMensagemSenha(state){
+            state.exibirMensagemSenha = !state.exibirMensagemSenha
         }
     }
 })
