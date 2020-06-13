@@ -4,7 +4,38 @@
           <label class="titulo">{{ titulo }}</label>
           <label class="versao">{{ versao }}</label>
       </div>
-      <div id="bloco-central">
+
+        <v-card class="mt-5 mx-5 px-5">
+            <v-card-text>
+                <v-form>
+                    <v-text-field label="Identificação" v-model="usuario.user"
+                        prepend-icon="mdi-account-box"></v-text-field>
+
+                    <v-text-field label="Senha" v-model="usuario.senha"
+                        prepend-icon="mdi-lock"
+                        :type="exibirSenha? 'text' : 'password'"
+                        :append-icon="exibirSenha? 'mdi-eye':'mdi-eye-off'"
+                        @click:append="exibirSenha = !exibirSenha"></v-text-field>
+
+                </v-form>
+            </v-card-text>
+            <v-divider></v-divider>
+            
+            <v-card-actions class="d-flex flex-column justify-space-around">
+                <v-btn id="botao-entrar" color="lsecondary white--text" large
+                    class="font-weight-black"
+                    :disabled="!online" @click.prevent="login">
+                    {{ labelLogin }}
+                </v-btn>
+                
+                <div id="link-senha" @click.prevent="esqueceuSenha">
+                <a href="">Esqueci ou não possuo uma senha</a>
+                </div>
+            </v-card-actions>
+        </v-card>
+
+
+      <div id="bloco-central" v-if='1==2'>
           <form id="campos" name="formLogin" action="login" method="post">
               <div class="grupo-campo">
                   <div class="icone">
@@ -23,7 +54,7 @@
               <!-- <button id="botao-entrar" class="botao forma" @click.prevent="login"> -->
               <div class="my-2">
                 <v-btn id="botao-entrar" color="hsecondary" large
-                    @click.prevent="login">
+                    :disabled="!online" @click.prevent="login">
                     {{ labelLogin }}
                 </v-btn>
               </div>
@@ -57,7 +88,9 @@ export default {
         titulo: "Acompanhamento de PDV",
         versao: "Versão 0.1.0",
         labelLogin: "Entrar",
-        usuario: {}
+        exibirSenha : false,
+        usuario: {},
+        online: navigator.onLine
       }
   },
   computed: 
@@ -81,11 +114,19 @@ export default {
             .catch(err => console.log('ERRO: '+ err.response.data))
     },
     esqueceuSenha(){
-      this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
+        this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
+    },
+    atualizarOnline(){
+        this.online = navigator.onLine
     }
   },
   beforeMount(){
-      console.log("STORE: Estado exibirMensagemSenha - ", this.exibirMensagemSenha)
+      window.addEventListener('online', this.atualizarOnline)
+      window.addEventListener('offline', this.atualizarOnline)
+  },
+  beforeDestroy(){
+      window.removeEventListener('online', this.atualizarOnline)
+      window.addEventListener('offline', this.atualizarOnline)
   }
 }
 </script>

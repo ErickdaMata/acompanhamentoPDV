@@ -37,7 +37,7 @@ export default {
             //Limpa o armazenamento da sessão no navegador
             localStorage.removeItem(userKey)
             //Redireciona o usuário para a página inicial
-            this.$router.push( {path: '/'} )
+            this.$router.push( {path: '/login'} )
         },
         async validateToken(){
         console.log('iniciou validação')
@@ -49,7 +49,7 @@ export default {
         console.log('User Data', userData)
         if(!userData) {
             this.carregando = false
-            return this.$router.push({path: '/'})
+            return this.$router.push({path: '/login'})
         }
 
         const res = await axios.post(`${baseURL}/val`, userData)
@@ -60,7 +60,7 @@ export default {
             this.recuperarDados()
         } else {
             localStorage.removeItem(userKey)
-            this.$router.push({path: '/'})
+            this.$router.push({path: '/login'})
         }
         
         },
