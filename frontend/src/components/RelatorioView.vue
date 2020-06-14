@@ -14,6 +14,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars, no-console */
 import axios from 'axios'
 import {mapGetters} from 'vuex'
 import {baseURL, userKey} from '@/global'
@@ -24,7 +25,8 @@ export default {
             titulo: 'Relatórios',
             empresasArray: [],
             relatoriosArray: [],
-            carregando: true
+            carregando: true,
+            backSync: ('SyncManager' in window)
         }
     },
     computed: 
@@ -33,58 +35,112 @@ export default {
         })
     ,
     methods:{
-        sair(){
+        excluirToken(){
             //Limpa o armazenamento da sessão no navegador
-            localStorage.removeItem(userKey)
+            //Verifica se IndexedDB está disponível para uso
+            if(window.indexedDB)
+                limparIndexDB('token') // eslint-disable-line no-undef
+            //Se não estiver, limpa o Local Storage
+            else
+                localStorage.removeItem(userKey)
+        },
+        async recuperarSessao(){
+            //Recupera os dados da sessão no navegador
+            //Verifica se IndexedDB está disponível para uso
+            if(window.indexedDB){
+                console.log("LEITURA IndexedDB")
+                const dados = await obterIndexDB('token') // eslint-disable-line no-undef
+                return dados[0]
+            }
+            //Se não estiver, limpa o Local Storage
+            else{
+                const json = localStorage.getItem(userKey)
+                return JSON.parse(json)
+            }
+        },
+        sair(){
+            //Apaga os dados armazenados no IndexedDB ou Local Storage
+            this.excluirToken()
             //Redireciona o usuário para a página inicial
             this.$router.push( {path: '/login'} )
         },
-        async validateToken(){
-        console.log('iniciou validação')
-        this.carregando = true
 
-        const json = localStorage.getItem(userKey)
-        const userData = JSON.parse(json)
-        this.$store.commit('salvarSessao', null)
-        console.log('User Data', userData)
-        if(!userData) {
-            this.carregando = false
-            return this.$router.push({path: '/login'})
-        }
+        async validarSessao(){
+            console.log('iniciou validação')
+            this.carregando = true
 
-        const res = await axios.post(`${baseURL}/val`, userData)
-        console.log('Response', res.data)
-        if(res.data){
-            this.$store.commit('salvarSessao', userData)
-            console.log('Sessão', this.$store.state.sessao)
-            this.recuperarDados()
-        } else {
-            localStorage.removeItem(userKey)
-            this.$router.push({path: '/login'})
-        }
-        
+            //Se sessão armazenada é inválida
+            if(!this.sessao) {
+                //Para de exibir overlay carregando
+                this.carregando = false
+                //Retorna o usuário para tela principal
+                return this.$router.push({path: '/login'})
+            }
+
+            //Caso o usuário tenha sessão, o sistema valida o token
+            //Retorna true | false
+            const res = await axios.post(`${baseURL}/val`, this.sessao)
+            console.log('Response', res.data)
+            //Caso a resposta seja 'true'
+            if(!res.data){
+                this.sair()
+                //Salva os dados da sessão no Vuex
+                //this.$store.commit('salvarSessao', this.sessao)
+                //console.log('Sessão', this.$store.state.sessao)
+                //Recupera os dados de relatório
+                //this.recuperarRelatorios()
+            //Se a resposta for 'false'
+            //} else {
+                //Termina a sessão do usuário
+                //this.sair()
+            }
         },
-        recuperarDados(){
+        recuperarRelatorios(){
             //Requisição para obter os relatórios disponíveis
             axios.post(baseURL + '/relatorios', this.sessao)
                 .then(res => res.data)
-                .then(dados => dados.empresas.map(empresa => {
-                    this.empresasArray.push(empresa.nome)
-                    this.relatoriosArray.push(empresa.rel)
+                .then(dados => {
+                    dados.empresas.map(empresa => {
+                        this.empresasArray.push(empresa.nome)
+                        this.relatoriosArray.push(empresa.rel)
+                    })
                     this.carregando = false
-                }))
+                })
+        },
+        async gerenciarCarregamento(){
+            //Caso não exista uma sessão ativa, será necessário
+            //tentar recuperar uma sessão salva no navegador
+            if(!this.sessao){
+                //Verifica se há um token armazenado
+                const sessaoArmazenada = await this.recuperarSessao()
+                this.$store.commit('salvarSessao', sessaoArmazenada)
+                this.validarSessao()
+            } 
+            if (navigator.onLine){
+                //Obtendo a sessão, usa o token atual para recuperar os dados
+                return this.recuperarRelatorios()
+            } else {
+                //Inicia verificação para Background Sync
+                if('serviceWorker' in navigator && 'SyncManager' in window){
+                    const a= 2
+                }
+            }
+            
+            
+        },
+        backgroundSync(){
+            //Se há um Service Worker ativo
+                navigator.serviceWorker.ready
+                    .then((sw) => {
+                        sw.sync.register('back-sync')
+                    })
+                    .then(() => {
+                        alert("Background Sync registrado")     
+                    })
         }
     },
     beforeMount(){
-        //Caso não exista uma sessão ativa, será necessário verificar
-        //se o usuário possui uma sessão salva no Local Storage
-        if(!this.sessao){
-            //Verifica se há um token armazenado e se está válido
-            this.validateToken()
-        }else{
-            //Do contrário, usa o token atual para recuperar os dados
-            this.recuperarDados()
-        }
+        this.gerenciarCarregamento()
     }
 }
 </script>

@@ -1,7 +1,19 @@
 /* eslint-disable no-unused-vars, no-console */
+self.importScripts('./js/idb.js')
+self.importScripts('./js/indexDB.js')
 
 const NOME_CACHE_ESTATICO = 'precache-v1'
 const NOME_CACHE_DINAMICO = 'dinamico-v1'
+
+const ARQUIVOS = [
+    '/',
+    '/index.html',
+    '/offline',
+    '/js/idb.js',
+    '/js/indexDB.js',
+    'chunk-vendors.js',
+    '/js/app.js',
+]
 
 self.addEventListener('install', function (event) {
     //Adiciona uma espera a instalação, para que o conteúdo não seja
@@ -12,12 +24,7 @@ self.addEventListener('install', function (event) {
             //No cache específico passado
             .then((cache) => {
                 //Adiciona todos os itens por Array, cada elemento será uma Promise
-                cache.addAll( [
-                    '/',
-                    '/index.html',
-                    '/js/app.js',
-                    '/js/chunk-vendors.js'
-                ])
+                cache.addAll(ARQUIVOS)
             })
     )
 })
@@ -74,10 +81,13 @@ self.addEventListener('fetch', (event) => {
                                 })
                         })
                         //Caso o fetch não seja possível haverá um retorno 'reject'
-                        //Para evitar que os erros sejam apontados, o tratamento é
-                        //ignorado - Erros podem ser tratados aqui
+                        //Como o cache já foi consultado e o conteúdo não está lá,
+                        //é resta exibir ao usuário que ele está offline
                         .catch((e) => {
-                            
+                            return caches.open(NOME_CACHE_ESTATICO)
+                                .then(cache => {
+                                    cache.match('/offline')
+                                })
                         })
                 }
                 

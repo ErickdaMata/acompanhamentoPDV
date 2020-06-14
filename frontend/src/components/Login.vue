@@ -34,37 +34,6 @@
             </v-card-actions>
         </v-card>
 
-
-      <div id="bloco-central" v-if='1==2'>
-          <form id="campos" name="formLogin" action="login" method="post">
-              <div class="grupo-campo">
-                  <div class="icone">
-                      <img src="../assets/img/usuario.png" alt="">
-                  </div>
-                  <input id="usuario" class="entrada-dados" v-model="usuario.user"
-                      name="usuario" type="text" placeholder="Identificação">
-              </div>
-              <div class="grupo-campo">
-              <div class="icone">
-                  <img src="../assets/img/pass.png" alt="">
-              </div>
-                  <input id="senha" class="entrada-dados" v-model="usuario.senha"
-                      name="senha" type="password" placeholder="digite sua senha">
-              </div>
-              <!-- <button id="botao-entrar" class="botao forma" @click.prevent="login"> -->
-              <div class="my-2">
-                <v-btn id="botao-entrar" color="hsecondary" large
-                    :disabled="!online" @click.prevent="login">
-                    {{ labelLogin }}
-                </v-btn>
-              </div>
-                    
-              <!-- </button> -->
-          </form>
-          <div id="link-senha" @click.prevent="esqueceuSenha">
-              <a href="">Esqueci ou não possuo uma senha</a>
-          </div>
-      </div>
     <v-overlay v-if="exibirMensagemSenha">
         <MensagemSenha />
     </v-overlay>
@@ -72,11 +41,12 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars, no-console */
 import axios from 'axios'
 import {mapGetters} from 'vuex'
 import { baseURL, userKey } from '@/global'
 import MensagemSenha from './MensagemSenha'
-
+ 
 export default { 
   name: 'Login',
   components: {MensagemSenha},
@@ -103,15 +73,23 @@ export default {
         axios.post(baseURL, this.usuario)
             .then(resp => {
                 if(resp.status == 201)
-                    //Retornar objeto data = {...payload, token}
-                    return resp.data
-                })
-            .then(sessao => {
-                this.$store.commit('salvarSessao', sessao)
-                localStorage.setItem(userKey, JSON.stringify(sessao))
-                this.$router.push({path:'/relatorios'})
-                })
-            .catch(err => console.log('ERRO: '+ err.response.data))
+                        //Retornar objeto data = {...payload, token}
+                        return resp.data
+                    })
+                .then(sessao => {
+                    this.$store.commit('salvarSessao', sessao)
+
+                    //Verifica antes de salvar se IndexedDB está disponível para uso
+                    if(window.indexedDB)
+                        armazenarIndexDB('token', sessao) // eslint-disable-line no-undef
+                    //Se não estiver, utiliza o Local Storage
+                    else
+                        localStorage.setItem(userKey, JSON.stringify(sessao))
+                    
+                    //Realiza a navegação para relatórios
+                    this.$router.push({path:'/relatorios'})
+                    })
+                .catch(err => console.log('ERRO: '+ err.response.data))
     },
     esqueceuSenha(){
         this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
@@ -133,18 +111,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/*
-:root{ 
-    --primaria-escura: #89cff0ff;
-    --primaria-clara: #d6edffff;
-    --botao-clara: #00a7e1ff;
-    --botao-escura: hsla(207, 86%, 76%, 1);
-    --letra-clara: #f6f7ebff;
-    --letra-escura: #212738ff;
-    --warning: #f9c784ff;
-    --success: #5abfa6ff;
-    --error: #f97068ff; 
-}*/
 
 *{
     /* border: solid 0.1px #333; */

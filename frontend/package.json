@@ -13,6 +13,7 @@
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.5",
+    "idb": "^5.0.4",
     "vue": "^2.6.11",
     "vue-router": "3.0.2",
     "vuetify": "^2.2.11",

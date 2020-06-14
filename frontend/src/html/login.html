@@ -1,0 +1,30 @@
+<div id="bloco-central" v-if='1==2'>
+          <form id="campos" name="formLogin" action="login" method="post">
+              <div class="grupo-campo">
+                  <div class="icone">
+                      <img src="../assets/img/usuario.png" alt="">
+                  </div>
+                  <input id="usuario" class="entrada-dados" v-model="usuario.user"
+                      name="usuario" type="text" placeholder="Identificação">
+              </div>
+              <div class="grupo-campo">
+              <div class="icone">
+                  <img src="../assets/img/pass.png" alt="">
+              </div>
+                  <input id="senha" class="entrada-dados" v-model="usuario.senha"
+                      name="senha" type="password" placeholder="digite sua senha">
+              </div>
+              <!-- <button id="botao-entrar" class="botao forma" @click.prevent="login"> -->
+              <div class="my-2">
+                <v-btn id="botao-entrar" color="hsecondary" large
+                    :disabled="!backSync && !online" @click.prevent="login">
+                    {{ labelLogin }}
+                </v-btn>
+              </div>
+                    
+              <!-- </button> -->
+          </form>
+          <div id="link-senha" @click.prevent="esqueceuSenha">
+              <a href="">Esqueci ou não possuo uma senha</a>
+          </div>
+</div>
