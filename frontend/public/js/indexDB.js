@@ -1,42 +1,50 @@
 const nomeDB = 'pwaStore'
-const dbStoreBS = 'token'
+const dbStoreToken = 'token'
+const dbStoreBS = 'relatorios'
 const versaoDB = '1'
 
 const indexDB = idb.open(nomeDB, versaoDB, (db)=>{
-        console.log('indexDB criou')
-        if(!db.objectStoreNames.contains(dbStoreBS)) {
-            db.createObjectStore(dbStoreBS, {keyPath: 'id'})
+        
+        if(!db.objectStoreNames.contains(dbStoreToken)) {
+            console.log('indexDB criou ', dbStoreToken)
+            db.createObjectStore(dbStoreToken, {keyPath: 'id'})
+        }
+        if('SyncManager' in window){
+            if(!db.objectStoreNames.contains(dbStoreBS)) {
+                console.log('indexDB criou ', dbStoreBS)
+                db.createObjectStore(dbStoreBS, {keyPath: 'nome'})
+            }
         }
     })
 
-const armazenarIndexDB = function(store, data) {
+const armazenarIndexDB = function(idStore, data) {
     return indexDB
         .then( (db) =>{
-            console.log('indexDB armazenou')
-            const transacao = db.transaction(store, 'readwrite')
-            const tabela = transacao.objectStore(store)
-            tabela.put(data)
+            console.log('indexDB armazenou:', data)
+            const transacao = db.transaction(idStore, 'readwrite')
+            const store = transacao.objectStore(idStore)
+            store.put(data)
             return transacao.complete
         })    
 }
 
-const obterIndexDB = function (store) {
+const obterIndexDB = function (idStore) {
     return indexDB
         .then( (db) => {
-            console.log('[indexDB] leitura dos dados')
-            const transacao = db.transaction(store, 'readonly')
-            const tabela = transacao.objectStore(store)
-            return tabela.getAll()
+            console.log('[indexDB] leitura dos dados:', idStore)
+            const transacao = db.transaction(idStore, 'readonly')
+            const store = transacao.objectStore(idStore)
+            return store.getAll()
         })
 }
 
-const limparIndexDB = function(store) {
+const limparIndexDB = function(idStore) {
     return indexDB
         .then( (db) =>{
             console.log('indexDB apagou os dados')
-            const transacao = db.transaction(store, 'readwrite')
-            const tabela = transacao.objectStore(store)
-            tabela.clear()
+            const transacao = db.transaction(idStore, 'readwrite')
+            const store = transacao.objectStore(idStore)
+            store.clear()
             return transacao.complete
         })    
 }

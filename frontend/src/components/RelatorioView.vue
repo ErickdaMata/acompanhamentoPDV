@@ -5,7 +5,7 @@
             <img id="icone-sair" @click="sair"
                 src="../assets/img/sair.png" alt="[sair]">
         </div>
-        <v-overlay :value="carregando">
+        <v-overlay v-model="carregando">
             <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
         <!-- Será passado para o componente renderizado a lista de empresas -->
@@ -49,13 +49,13 @@ export default {
             //Verifica se IndexedDB está disponível para uso
             if(window.indexedDB){
                 console.log("LEITURA IndexedDB")
-                const dados = await obterIndexDB('token') // eslint-disable-line no-undef
-                return dados[0]
+                const sessao = await obterIndexDB('token') // eslint-disable-line no-undef
+                return sessao[0]
             }
-            //Se não estiver, limpa o Local Storage
+            //Se não estiver, recupera do Local Storage
             else{
-                const json = localStorage.getItem(userKey)
-                return JSON.parse(json)
+                const sessao = localStorage.getItem(userKey)
+                return JSON.parse(sessao)
             }
         },
         sair(){
@@ -67,35 +67,38 @@ export default {
 
         async validarSessao(){
             console.log('iniciou validação')
-            this.carregando = true
-
-            //Se sessão armazenada é inválida
-            if(!this.sessao) {
-                //Para de exibir overlay carregando
-                this.carregando = false
-                //Retorna o usuário para tela principal
-                return this.$router.push({path: '/login'})
+            if(navigator.onLine){
+                //Se sessão armazenada é vazia ou undefined
+                if(!this.sessao) {
+                    //Para de exibir overlay carregando
+                    this.carregando = false
+                    //Retorna o usuário para tela principal
+                    return this.$router.push({path: '/login'})
+                }
+                //Caso o usuário tenha sessão, o sistema valida o token
+                //Retorna true | false
+                const res = await axios.post(`${baseURL}/val`, this.sessao)
+                console.log('[validar:] AXIOS:', axios.post(`${baseURL}/val`, this.sessao))
+                console.log('[validar:] URL:', `${baseURL}/val`)
+                console.log('[validar:] sessao:', this.sessao)
+                console.log('Response', res.data)
+                
+                //Caso a resposta seja 'true'
+                if(res.data){
+                    this.recuperarRelatorios(true)
+                }
+                //Caso a resposta seja 'false'    
+                else{
+                    this.sair()
+                }
+            } 
+            //Caso não esteja online
+            else {
+                this.recuperarRelatorios(false)
             }
 
-            //Caso o usuário tenha sessão, o sistema valida o token
-            //Retorna true | false
-            const res = await axios.post(`${baseURL}/val`, this.sessao)
-            console.log('Response', res.data)
-            //Caso a resposta seja 'true'
-            if(!res.data){
-                this.sair()
-                //Salva os dados da sessão no Vuex
-                //this.$store.commit('salvarSessao', this.sessao)
-                //console.log('Sessão', this.$store.state.sessao)
-                //Recupera os dados de relatório
-                //this.recuperarRelatorios()
-            //Se a resposta for 'false'
-            //} else {
-                //Termina a sessão do usuário
-                //this.sair()
-            }
         },
-        recuperarRelatorios(){
+        obterRelatoriosAgora(){
             //Requisição para obter os relatórios disponíveis
             axios.post(baseURL + '/relatorios', this.sessao)
                 .then(res => res.data)
@@ -104,43 +107,74 @@ export default {
                         this.empresasArray.push(empresa.nome)
                         this.relatoriosArray.push(empresa.rel)
                     })
+                    //Termina a animação
                     this.carregando = false
                 })
+        },
+        obterRelatoriosIndexedDB(){
+            obterIndexDB('relatorios') // eslint-disable-line no-undef
+                .then(empresas => {
+                    empresas.map(empresa => {
+                        this.empresasArray.push(empresa.nome)
+                        this.relatoriosArray.push(empresa.rel)
+                    })
+                })
+                .then(()=> {
+                    limparIndexDB('relatorios') // eslint-disable-line no-undef
+                })
+                .then(() => this.carregando = false)
+        },
+        recuperarRelatorios(tokenValidado){
+            //Inicia verificação para Background Sync
+            if('serviceWorker' in navigator && 'SyncManager' in window){
+                navigator.serviceWorker.ready.then((sw) => {
+                    sw.sync.register(tokenValidado? 'sync-relatorios':'sync-valida-token')
+                })
+                .then(() => {
+                    if (!navigator.onLine)        
+                        alert("Back Sync")
+                })
+                .catch((err) => {
+                    console.log(err)
+                    if (tokenValidado && navigator.onLine)
+                        this.obterRelatoriosAgora()
+                    else
+                        this.sair()
+                })
+            } else {
+                this.obterRelatoriosAgora()
+            }
         },
         async gerenciarCarregamento(){
             //Caso não exista uma sessão ativa, será necessário
             //tentar recuperar uma sessão salva no navegador
-            if(!this.sessao){
-                //Verifica se há um token armazenado
-                const sessaoArmazenada = await this.recuperarSessao()
-                this.$store.commit('salvarSessao', sessaoArmazenada)
-                this.validarSessao()
-            } 
-            if (navigator.onLine){
-                //Obtendo a sessão, usa o token atual para recuperar os dados
-                return this.recuperarRelatorios()
-            } else {
-                //Inicia verificação para Background Sync
-                if('serviceWorker' in navigator && 'SyncManager' in window){
-                    const a= 2
-                }
+            if(this.sessao){
+                console.log("[Vue] possui sessao")
+                //Se já possui uma sessão, usa o token atual para recuperar os dados
+                return this.recuperarRelatorios(true)
             }
+            console.log("[Vue] NÃO possui sessao")
+            //Verifica se há um token armazenado
+            const sessaoArmazenada = await this.recuperarSessao()
+            this.$store.commit('salvarSessao', sessaoArmazenada) 
             
-            
+            //Valida a sessão e recupera os relatórios
+            return this.recuperarRelatorios(false)
+            /* navigator.serviceWorker.ready.then((sw) => {
+                    sw.sync.register('sync-relatorios')
+                        this.carregando = false
+                }) */
         },
-        backgroundSync(){
-            //Se há um Service Worker ativo
-                navigator.serviceWorker.ready
-                    .then((sw) => {
-                        sw.sync.register('back-sync')
-                    })
-                    .then(() => {
-                        alert("Background Sync registrado")     
-                    })
-        }
     },
     beforeMount(){
         this.gerenciarCarregamento()
+        navigator.serviceWorker.addEventListener('message', event => {
+            if(event.data.msg === 'token invalido')
+                this.sair()
+            if(event.data.msg === 'backsync ok')
+                this.obterRelatoriosIndexedDB()
+        });
+        //this.obterRelatoriosIndexedDB()
     }
 }
 </script>

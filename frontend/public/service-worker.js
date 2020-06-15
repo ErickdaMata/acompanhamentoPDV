@@ -11,8 +11,12 @@ const ARQUIVOS = [
     '/offline',
     '/js/idb.js',
     '/js/indexDB.js',
-    'chunk-vendors.js',
+    '/js/chunk-vendors.js',
     '/js/app.js',
+    '/js/promise.js',
+    '/js/fetch.js',
+    'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
+    'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900',
 ]
 
 self.addEventListener('install', function (event) {
@@ -31,7 +35,7 @@ self.addEventListener('install', function (event) {
 
 //Chamado no momento de ativação do Service Worker
 self.addEventListener('activate', function (event) {
-    console.log('[sw.js]: Ativando...', event)
+    console.log('[SW]: Ativando')
     //Inicia uma nova espera, para limpar o cache antigo da aplicação
     event.waitUntil(
         //Obtém todas as identificações de cache atuais
@@ -54,6 +58,9 @@ self.addEventListener('activate', function (event) {
 
 //Interceptando eventos de busca de conteúdo
 self.addEventListener('fetch', (event) => {
+
+    //console.log("FETCH" ,event.request.url.indexOf('/relatorios'))
+
     //Cria o 'proxy' para alterar a resposta
     event.respondWith(
         //Procura o conteúdo buscado no cache
@@ -93,4 +100,85 @@ self.addEventListener('fetch', (event) => {
                 
             })
     )
+})
+
+function informar(mensagem) {
+    self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.postMessage({msg: mensagem}))
+    })
+}
+
+self.addEventListener('sync', (event) => {
+    const prefix = "[SW:Sync]"
+    console.log(prefix)
+
+    obterIndexDB(dbStoreToken)
+    .then((dados)=> {
+        return  dados[0]
+    })
+    .then((sessao)=> {
+        
+        if(!sessao){
+            throw 'token invalido'
+        }
+        const cabecalho = new Headers({
+            "Authorization": `bearer ${sessao.token}`,
+            "Content-Type": "application/json;charset=utf-8",
+            "Accept": "application/json, text/plain, */*"
+        })
+        const init = {
+            method: 'POST',
+            headers: cabecalho,
+            mode: 'cors',
+            body: JSON.stringify(sessao)
+        } 
+        return init
+    })
+    .then((config) => {
+        if(event.tag === 'sync-valida-token'){
+            
+            fetch("http://localhost:9000/val", config)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((tokenValidado) => {
+                    
+                    if(tokenValidado === false){
+                        console.log('THROW - Token Invalido')
+                        throw 'token invalido'
+                    }
+                })
+                .catch((err) => {
+                    informar(err)            
+                })        
+        }
+        return config
+    })
+    .then((config) => {
+        if(event.tag === 'sync-relatorios' || event.tag === 'sync-valida-token'){
+            fetch("http://localhost:9000/relatorios", config)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((relatorios)=> {
+                    console.log(prefix + "Dados recuperados", relatorios)
+                    relatorios.map(relatorio => {
+                        armazenarIndexDB(dbStoreBS, relatorio)
+                    })
+                })
+                .then(()=> {
+                    informar('backsync ok')
+                })
+                .catch((err) => {
+                    console.log(prefix + "Erro na recuperação", err)
+                })
+        }
+    })
+    .catch((err) => {
+        console.log(err)
+        informar(err)
+    })
+
+    
+    
 })

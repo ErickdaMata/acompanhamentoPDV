@@ -1,5 +1,5 @@
 <template>
-    <v-alert type="info" class="px-4 mx-4 d-flex"
+    <v-alert type="info" class="px-5 mx-5 d-flex"
         elevation='4'>
       <h3 class="headline">
           Seu suporte operacional pode ajudar!
@@ -28,7 +28,7 @@ export default {
     name: 'MensagemSenha',
     methods: {
         fecharMensagem(){
-          this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
+          this.$store.commit('comutarExibirMensagemSenha', false)
         }
     }
 }

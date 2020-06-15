@@ -9,7 +9,7 @@
             <v-card-text>
                 <v-form>
                     <v-text-field label="Identificação" v-model="usuario.user"
-                        prepend-icon="mdi-account-box"></v-text-field>
+                        prepend-icon="mdi-account-box" ></v-text-field>
 
                     <v-text-field label="Senha" v-model="usuario.senha"
                         prepend-icon="mdi-lock"
@@ -27,6 +27,10 @@
                     :disabled="!online" @click.prevent="login">
                     {{ labelLogin }}
                 </v-btn>
+                <v-checkbox v-if="suportaNotificacao" v-model="permissaoNotificacao" autofocus
+                    @click.prevent="pedirPermissaoNotificacoes" label="Quero receber notificações">
+                    
+                </v-checkbox>
                 
                 <div id="link-senha" @click.prevent="esqueceuSenha">
                 <a href="">Esqueci ou não possuo uma senha</a>
@@ -34,7 +38,7 @@
             </v-card-actions>
         </v-card>
 
-    <v-overlay v-if="exibirMensagemSenha">
+    <v-overlay class="px-4" v-if="exibirMensagemSenha">
         <MensagemSenha />
     </v-overlay>
   </div>
@@ -60,7 +64,9 @@ export default {
         labelLogin: "Entrar",
         exibirSenha : false,
         usuario: {},
-        online: navigator.onLine
+        online: navigator.onLine,
+        suportaNotificacao: window.Notification,
+        permissaoNotificacao: Notification.permission == "granted" ? true : false
       }
   },
   computed: 
@@ -96,6 +102,14 @@ export default {
     },
     atualizarOnline(){
         this.online = navigator.onLine
+    },
+    pedirPermissaoNotificacoes(){
+        //if(this.permissaoNotificacao !== 'granted'){
+            Notification.requestPermission((resultado) =>{
+                if(resultado == 'granted')
+                    this.permissaoNotificacao = true
+            })
+        //}
     }
   },
   beforeMount(){

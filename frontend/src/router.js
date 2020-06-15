@@ -15,7 +15,8 @@ export default new Router({
         path: '/login',
         component: Login,
         name: 'home'
-    },{
+    },
+    {
         path: '/relatorios',
         component: RelatorioView,
         props: true, 
