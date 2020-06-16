@@ -5,7 +5,6 @@ import ListaRelatorios from './components/ListaRelatorios'
 import Relatorio from './components/Relatorio'
 import RelatorioView from './components/RelatorioView'
 import Offline from './components/Offline'
-import Teste from './components/Teste'
 
 Vue.use(Router)
 
@@ -27,10 +26,7 @@ export default new Router({
     }, {
         path: '/offline',
         component: Offline
-    }, {
-        path: '/teste',
-        component: Teste
-    }, {
+    },{
         path: '*',
         redirect: '/relatorios' 
     }]

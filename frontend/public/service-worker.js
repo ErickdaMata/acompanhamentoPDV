@@ -28,7 +28,7 @@ self.addEventListener('install', function (event) {
             //No cache específico passado
             .then((cache) => {
                 //Adiciona todos os itens por Array, cada elemento será uma Promise
-                cache.addAll(ARQUIVOS)
+                cache.addAll('ARQUIVOS')
             })
     )
 })
@@ -171,14 +171,12 @@ self.addEventListener('sync', (event) => {
                 })
                 .catch((err) => {
                     console.log(prefix + "Erro na recuperação", err)
+                    throw 'backsync fail'
                 })
         }
     })
     .catch((err) => {
-        console.log(err)
+        console.log('[SW]: erro', err)
         informar(err)
-    })
-
-    
-    
+    })  
 })

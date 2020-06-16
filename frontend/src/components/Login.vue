@@ -1,47 +1,51 @@
 <template>
-  <div id="body-login">
-      <div id="cabecalho">
-          <label class="titulo">{{ titulo }}</label>
-          <label class="versao">{{ versao }}</label>
-      </div>
+    <v-layout class="background-login">
+        <div id="body-login">
+            <div id="cabecalho">
+                <label class="text-center branco--text
+                    font-weight-bold text-h4" >
+                    {{ titulo }}
+                </label>
+                <label class="text-right branco--text
+                    font-weight-light">
+                    {{ versao }}
+                </label>
+            </div>
 
-        <v-card class="mt-5 mx-5 px-5">
-            <v-card-text>
-                <v-form>
-                    <v-text-field label="Identificação" v-model="usuario.user"
-                        prepend-icon="mdi-account-box" ></v-text-field>
+            <v-card class="mt-5 mx-2 px-3 align-self-center" max-width='300'>
+                <v-card-text>
+                    <v-form>
+                        <v-text-field label="Identificação" v-model="usuario.user"
+                            prepend-icon="mdi-account-box" ></v-text-field>
 
-                    <v-text-field label="Senha" v-model="usuario.senha"
-                        prepend-icon="mdi-lock"
-                        :type="exibirSenha? 'text' : 'password'"
-                        :append-icon="exibirSenha? 'mdi-eye':'mdi-eye-off'"
-                        @click:append="exibirSenha = !exibirSenha"></v-text-field>
+                        <v-text-field label="Senha" v-model="usuario.senha"
+                            prepend-icon="mdi-lock"
+                            :type="exibirSenha? 'text' : 'password'"
+                            :append-icon="exibirSenha? 'mdi-eye':'mdi-eye-off'"
+                            @click:append="exibirSenha = !exibirSenha"></v-text-field>
 
-                </v-form>
-            </v-card-text>
-            <v-divider></v-divider>
-            
-            <v-card-actions class="d-flex flex-column justify-space-around">
-                <v-btn id="botao-entrar" color="lsecondary white--text" large
-                    class="font-weight-black"
-                    :disabled="!online" @click.prevent="login">
-                    {{ labelLogin }}
-                </v-btn>
-                <v-checkbox v-if="suportaNotificacao" v-model="permissaoNotificacao" autofocus
-                    @click.prevent="pedirPermissaoNotificacoes" label="Quero receber notificações">
-                    
-                </v-checkbox>
+                    </v-form>
+                </v-card-text>
+                <v-divider></v-divider>
                 
-                <div id="link-senha" @click.prevent="esqueceuSenha">
-                <a href="">Esqueci ou não possuo uma senha</a>
-                </div>
-            </v-card-actions>
-        </v-card>
+                <v-card-actions class="d-flex flex-column justify-space-around">
+                    <v-btn id="botao-entrar" color="hsegunda white--text" large
+                        class="font-weight-black"
+                        :disabled="!online" @click.prevent="login">
+                        {{ labelLogin }}
+                    </v-btn>
+                    
+                    <div id="link-senha" @click.prevent="esqueceuSenha">
+                    <a href="">Esqueci ou não possuo uma senha</a>
+                    </div>
+                </v-card-actions>
+            </v-card>
 
-    <v-overlay class="px-4" v-if="exibirMensagemSenha">
-        <MensagemSenha />
-    </v-overlay>
-  </div>
+            <v-overlay class="px-4" v-if="exibirMensagemSenha">
+                <MensagemSenha />
+            </v-overlay>
+        </div>
+    </v-layout>
 </template>
 
 <script>
@@ -50,6 +54,7 @@ import axios from 'axios'
 import {mapGetters} from 'vuex'
 import { baseURL, userKey } from '@/global'
 import MensagemSenha from './MensagemSenha'
+import { mdiAccountBox } from '@mdi/js';
  
 export default { 
   name: 'Login',
@@ -59,14 +64,16 @@ export default {
   },
   data(){
     return {
-        titulo: "Acompanhamento de PDV",
+        titulo: "NovaTech PDV",
         versao: "Versão 0.1.0",
         labelLogin: "Entrar",
         exibirSenha : false,
         usuario: {},
         online: navigator.onLine,
-        suportaNotificacao: window.Notification,
-        permissaoNotificacao: Notification.permission == "granted" ? true : false
+        iconeUsuario: '',
+        iconeSenha: '',
+        iconeVerSenha: '',
+        iconeVerSenhaOff: '',
       }
   },
   computed: 
@@ -95,21 +102,19 @@ export default {
                     //Realiza a navegação para relatórios
                     this.$router.push({path:'/relatorios'})
                     })
-                .catch(err => console.log('ERRO: '+ err.response.data))
+                .catch(err => {
+                    console.log('ERRO: '+ err.response.data)
+                    this.$store.commit('exibirSnackbar', {
+                            texto: err.response.data,
+                            tipo:"alerta"
+                        })   
+                })
     },
     esqueceuSenha(){
         this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
     },
     atualizarOnline(){
         this.online = navigator.onLine
-    },
-    pedirPermissaoNotificacoes(){
-        //if(this.permissaoNotificacao !== 'granted'){
-            Notification.requestPermission((resultado) =>{
-                if(resultado == 'granted')
-                    this.permissaoNotificacao = true
-            })
-        //}
     }
   },
   beforeMount(){

@@ -1,8 +1,10 @@
 <template>
-    <div id="body-relatorio">
-        <div id="bloco-relatorio">
+    <div id="body-relatorio"
+        class="pt-sm-2 pt-md-5 d-flex justify-center">
+        <v-card id="bloco-relatorio" class="mx-5 my-5" max-width='800'
+            @dblclick="fullscreen = !fullscreen">
             <pre id="relatorio">{{ relatorios[id] }}</pre>
-        </div>
+        </v-card>
     </div>
 </template>
 
@@ -18,8 +20,14 @@ export default {
     },
     data(){
         return{
+            fullscreen: false,
             titulo: 'Relatório de Caixas',
             id: this.$route.params.id
+        }
+    },
+    methods: {
+        exibirFullscreen(){
+          this.$store.commit('comutarFullscreen')
         }
     }
 }
@@ -27,7 +35,7 @@ export default {
 
 <style scoped>
 #bloco-relatorio{
-    font-size: 4vw;
+    font-size: 3.5vw;
     font-family: monospace;
     font-weight: 600;
     color: #222;

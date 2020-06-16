@@ -7,7 +7,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         sessao: '',
-        exibirMensagemSenha: false
+        exibirMensagemSenha: false,
+        snackbar: 
+            {
+                exibir: '',
+                texto: '',
+                cor: '',
+                tempo: 6000,    
+            },
+        fullscreen: false
     },
     getters: {
         getSessao(state){
@@ -16,6 +24,12 @@ export default new Vuex.Store({
         getExibirMensagemSenha(state){
             //console.log("From STORE:", state.exibirMensagemSenha)
             return state.exibirMensagemSenha
+        },
+        getSnackbar(state){
+            return state.snackbar
+        },
+        getFullscreen(state){
+            return state.fullscreen
         }
     },
     mutations: {
@@ -28,6 +42,15 @@ export default new Vuex.Store({
         },
         comutarExibirMensagemSenha(state){
             state.exibirMensagemSenha = !state.exibirMensagemSenha
-        }
+        },
+        exibirSnackbar(state, payload){
+            state.snackbar.exibir = true,
+            state.snackbar.texto = payload.texto,
+            state.snackbar.cor = payload.tipo,
+            state.snackbar.tempo = payload.tempo? payload.tempo : 6000
+        },
+        comutarFullscreen(state){
+            state.fullscreen = !state.fullscreen
+        },
     }
 })

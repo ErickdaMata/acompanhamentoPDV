@@ -1,13 +1,24 @@
 <template>
   <div>
-        <ul class="lista">
-            <!-- Lista de empresas disponíveis -->
-            <router-link  v-for="(empresa, id) in empresas" :to="{path: 'relatorios/' + id}"
-                :key="empresa" tag="li" class="item-lista" >
-                {{ empresa }}
-            </router-link>
-
-        </ul>
+      <v-container class="mx-auto">
+              <v-layout wrap class="justify-center justify-md-start">
+                  <v-flex xs12 sm9 md6 lg4 v-for="(empresa, id) in empresas" :key="empresa">
+                            <v-card 
+                            class="mx-5 my-5 py-5 px-5 flex-column"
+                            :to="{path: 'relatorios/' + id}"
+                            >
+                                <v-list-item-title
+                                    class="headline mb-1">
+                                    {{ empresa }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{ horarios[id] }}
+                                </v-list-item-subtitle>
+                        </v-card>
+                  </v-flex>
+                        
+              </v-layout> 
+      </v-container>
   </div>
 </template>
 
@@ -15,6 +26,12 @@
 export default {
     props: {
         empresas : {
+            type: Array,
+            default: function() {
+                return []
+            }
+        },
+        horarios : {
             type: Array,
             default: function() {
                 return []

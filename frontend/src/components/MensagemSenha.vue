@@ -1,13 +1,16 @@
 <template>
-    <v-alert type="info" class="px-5 mx-5 d-flex"
-        elevation='4'>
+    <v-alert class="px-5 mx-5"
+        border="top"
+        colored-border
+        type="info"
+        elevation="2"
+        light>
       <h3 class="headline">
           Seu suporte operacional pode ajudar!
       </h3>
 
       <v-divider
-        class="my-4 info"
-        style="opacity: 0.8"
+        class="my-4"
       ></v-divider>
 
       <div>
