@@ -16,12 +16,12 @@
                 <v-card-text>
                     <v-form>
                         <v-text-field label="Identificação" v-model="usuario.user"
-                            prepend-icon="mdi-account-box" ></v-text-field>
+                            :prepend-icon="iconeUsuario" ></v-text-field>
 
                         <v-text-field label="Senha" v-model="usuario.senha"
-                            prepend-icon="mdi-lock"
+                            :prepend-icon="iconeSenha"
                             :type="exibirSenha? 'text' : 'password'"
-                            :append-icon="exibirSenha? 'mdi-eye':'mdi-eye-off'"
+                            :append-icon="exibirSenha? iconeVerSenhaOff: iconeVerSenha"
                             @click:append="exibirSenha = !exibirSenha"></v-text-field>
 
                     </v-form>
@@ -54,7 +54,7 @@ import axios from 'axios'
 import {mapGetters} from 'vuex'
 import { baseURL, userKey } from '@/global'
 import MensagemSenha from './MensagemSenha'
-import { mdiAccountBox } from '@mdi/js';
+import { mdiAccountBox, mdiLock, mdiEye, mdiEyeOff } from '@mdi/js';
  
 export default { 
   name: 'Login',
@@ -64,16 +64,16 @@ export default {
   },
   data(){
     return {
+        iconeUsuario: mdiAccountBox,
+        iconeSenha: mdiLock,
+        iconeVerSenha: mdiEye,
+        iconeVerSenhaOff: mdiEyeOff,
         titulo: "NovaTech PDV",
         versao: "Versão 0.1.0",
         labelLogin: "Entrar",
         exibirSenha : false,
         usuario: {},
         online: navigator.onLine,
-        iconeUsuario: '',
-        iconeSenha: '',
-        iconeVerSenha: '',
-        iconeVerSenhaOff: '',
       }
   },
   computed: 
@@ -116,6 +116,9 @@ export default {
     atualizarOnline(){
         this.online = navigator.onLine
     }
+  },
+  watch:{
+
   },
   beforeMount(){
       window.addEventListener('online', this.atualizarOnline)

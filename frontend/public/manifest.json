@@ -1,6 +1,6 @@
 {
     "name": "Acompanhamento de Relatórios i9PDV",
-    "short_name": "i9PDV",
+    "short_name": "Relatórios i9PDV",
     "icons": [
         {
             "src": "/img/icons/maskable-icon-256x256.png",
@@ -55,7 +55,7 @@
     "display": "standalone",
     "orientation": "any",
     "background_color": "#F6F7EB",
-    "theme_color": "#1C77C3",
+    "theme_color": "#00A7E1",
     "description": "Aplicação para visualização de relatórios de acompanhamento para clientes i9PDV.",
     "lang": "pt-BR"
 }

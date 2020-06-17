@@ -1,23 +1,108 @@
-<h2>&nbsp;</h2>
-<h2 style="text-align: center;">
-    &nbsp;Ol&aacute;, seus&nbsp;<em>scripts</em> desabilitados?
-</h2>
-<h2>&nbsp;</h2>
-<h3 style="text-align: center;">
-    Esta aplica&ccedil;&atilde;o necessita que <em>scripts</em>
-    estejam habilitados em seu navegador para funcionar
-    corretamente
-</h3>
-<hr />
-<p style="text-align: justify; padding-left: 30px;">&nbsp; &nbsp; &nbsp;Atualmente quase todas as p&aacute;ginas da internet cont&eacute;m JavaScript, uma linguagem de programa&ccedil;&atilde;o que &eacute; executada em seu navegador. Ela torna as p&aacute;ginas funcionais para prop&oacute;sitos espec&iacute;ficos, e se estiver desabilitada por alguma raz&atilde;o, o conte&uacute;do ou funcionalidade da p&aacute;gina pode se tornar limitado ou indispon&iacute;vel. Aqui voc&ecirc; encontra instru&ccedil;&otilde;es sobre como habilitar (ativar) o JavaScript nos cinco navegadores mais comumente usados:</p>
-<p style="padding-left: 30px;">
-    <a title="Como habilitar o JavaScript no seu navegador" href="https://www.enable-javascript.com/pt/" target="_blank" rel="noopener">
-        https://www.enable-javascript.com/pt/
-    </a>
-</p>
-<p style="padding-left: 30px;">&nbsp;</p>
-<p style="padding-left: 30px;">
-    <strong>
-        Para maiores informa&ccedil;&otilde;es, contate seu Suporte Nova Tech: (21) 2234-5678
-    </strong>
-</p>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div class="ns-info">
+        <svg class="info-el" style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+        </svg>
+        <h2 class="info-el info-text">
+            JavaScript desabilitado
+        </h2>
+    </div>
+    
+    <h2>&nbsp;</h2>
+    
+    <div class="centro">
+        <div class="ns-card">
+            <div class="ns-titulo">
+                <h1>
+                    Preciso habilitar <em>scripts</em>?
+                </h1>
+            </div>
+            <p style="text-align: justify; padding: 30px;">
+                &nbsp; &nbsp; &nbsp;Atualmente quase todas as páginas da internet contém 
+                JavaScript, uma linguagem de programação que é executada em seu navegador.
+                 Esta aplicação depende da habilitação de JavaScript para seu funcionamento,
+                  e se estiver desabilitada por alguma razão, sua aplicação não irá funcionar
+                    </br></br> Aqui você encontra instruções sobre como habilitar (ativar) o JavaScript
+                    em seu navegador:
+            </p>
+            <p class="link">
+                <a title="Como habilitar o JavaScript no seu navegador" href="https://www.enable-javascript.com/pt/" target="_blank" rel="noopener">
+                    https://www.enable-javascript.com/pt/
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <p >&nbsp;</p>
+    <div class="ns-info-suporte">
+        <p>
+            <strong>
+                <br>Suporte Nova Tech<br/><a href="tel:+55-21-2234-5678">(21) 2234-5678</a></strong>
+            </strong>
+        </p>
+    </div>
+</body>
+</html>
+
+<style>
+html{
+    padding: 0;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    background: #D6EDFF;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between;
+    color: #000;
+}
+
+.ns-info{
+    background-color: #00A7E1;
+    padding-left: 25px;
+    color: #FFFFFF;
+}
+.info-el{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2;
+}
+
+
+.ns-titulo{
+    color: #000
+}
+
+.centro{
+    justify-content: center;
+    display: flex;
+}
+
+.ns-card {
+    -webkit-box-shadow: 2px 5px 15px 0px #d3d3d3; 
+    box-shadow: 2px 5px 15px 0px #d3d3d3;
+    padding: 5px 30px;
+    margin: 0px 50px;
+    max-width: 800px;
+    background: #FFFFFF;
+    border-top: 5px solid #1C6EA4;
+    border-radius: 15px;
+    align-self: center;
+}
+.link{
+    padding: 5px 30px 30px 30px;
+}
+
+.ns-info-suporte{
+    text-align: center;
+    font-weight: 800;
+    font-size: 2em;
+    padding: 1vh 10vw;
+}
+
+</style>

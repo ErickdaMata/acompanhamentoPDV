@@ -2,7 +2,7 @@
     <div id="body-relatorio"
         class="pt-sm-2 pt-md-5 d-flex justify-center">
         <v-card id="bloco-relatorio" class="mx-5 my-5" max-width='800'
-            @dblclick="fullscreen = !fullscreen">
+            @dblclick.prevent="exibirFullscreen">
             <pre id="relatorio">{{ relatorios[id] }}</pre>
         </v-card>
     </div>
@@ -27,6 +27,7 @@ export default {
     },
     methods: {
         exibirFullscreen(){
+            console.log('acionado'),
           this.$store.commit('comutarFullscreen')
         }
     }

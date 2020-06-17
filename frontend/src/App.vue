@@ -34,8 +34,9 @@ export default {
   background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgb(6, 174, 230) 59%) no-repeat;
   overflow: scroll;
 }
-.v-main__wrap{
-  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgb(192, 230, 243) 59%) no-repeat;
+.v-main{
+  background: #D6EDFF repeat;
+  height: 100%;
   overflow: scroll;
 }
 </style> 

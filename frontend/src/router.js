@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './components/Login'
-import ListaRelatorios from './components/ListaRelatorios'
-import Relatorio from './components/Relatorio'
-import RelatorioView from './components/RelatorioView'
 import Offline from './components/Offline'
+import Relatorio from './components/Relatorio'
+import RelatorioApp from './components/RelatorioApp'
+import ListaRelatorios from './components/ListaRelatorios'
 
 Vue.use(Router)
 
@@ -17,7 +17,7 @@ export default new Router({
     },
     {
         path: '/relatorios',
-        component: RelatorioView,
+        component: RelatorioApp,
         props: true, 
         children: [
             { path: '', component: ListaRelatorios, props: true },

@@ -5,8 +5,16 @@
             v-show='!fullscreen'
             app
             >
+            <template v-slot:prepend>
+                <v-list-item two-line>
+                <v-list-item-content>
+                    <v-list-item-title>{{nomeApp}}</v-list-item-title>
+                    <v-list-item-subtitle>{{versaoApp}}</v-list-item-subtitle>
+                </v-list-item-content>
+                </v-list-item>
+            </template>
             <v-list dense>
-                <v-list-item link>
+                <v-list-item link @click="home">
                     <v-list-item-action>
                         <v-icon>{{iconeInicio}}</v-icon>
                     </v-list-item-action>
@@ -17,7 +25,7 @@
                 <v-list-item link @click="sair">
                     <v-list-item-action>
                         <v-icon>{{iconeSair}}</v-icon>
-                    </v-list-item-action>
+                    </v-list-item-action >
                     <v-list-item-content>
                         <v-list-item-title>{{textoSair}}</v-list-item-title>
                     </v-list-item-content>
@@ -72,17 +80,19 @@ import axios from 'axios'
 import {mapGetters} from 'vuex'
 import {baseURL, userKey} from '@/global'
 import { mdiLogoutVariant, mdiHomeOutline } from '@mdi/js'
-import { mdiBellOutline, mdiBellOff, mdiCheckOutline } from '@mdi/js'
+import { mdiBellOutline, mdiBellOff, mdiBellCheck } from '@mdi/js'
 
 export default {
     data(){
         return{
+            nomeApp: 'Nova Tech PDV',
+            versaoApp: '1.0.0',
             drawer: null,
             iconeInicio: mdiHomeOutline,
             iconeSair: mdiLogoutVariant,
             iconeNotificao: mdiBellOutline,
             iconeNotificaoNegada: mdiBellOff,
-            iconeNotificaoPermitida: mdiCheckOutline,
+            iconeNotificaoPermitida: mdiBellCheck,
             textoInicio: 'Tela Inicial',
             textoSair: 'Sair',
             textoNotificacao: 'Quero receber notificações',
@@ -150,6 +160,10 @@ export default {
                 const sessao = localStorage.getItem(userKey)
                 return JSON.parse(sessao)
             }
+        },
+        home(){
+            //Redireciona o usuário para a página inicial
+            this.$router.push( {path: '/'} )
         },
         sair(motivo){
             if(motivo === 'falha')
@@ -240,7 +254,7 @@ export default {
                     }        
                 })
                 .catch((err) => {
-                    console.log("[RelatorioView] Erro: ", err)
+                    console.log("[RelatorioApp] Erro: ", err)
                     if(navigator.onLine){
                         if(tokenValidado)
                             this.obterRelatoriosSemSW()
@@ -291,6 +305,7 @@ export default {
         }
     },
     beforeMount(){
+        this.$store.fullscreen = 'false'
         
         this.gerenciarCarregamento()
         this.registrarMessageChannel()
