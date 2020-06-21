@@ -1,8 +1,9 @@
 <template>
   <v-app>
         <v-snackbar
+            class="pb-3"
             v-model="snackbar.exibir"
-            :top="true"
+            :bottom="true"
             :color="snackbar.cor"
             :timeout="snackbar.tempo"
         >
@@ -31,7 +32,7 @@ export default {
   border: 1x solid white;
 }
 .v-application--wrap{
-  background: linear-gradient(0deg, rgba(255,255,255,1) 10%, rgb(6, 174, 230) 59%) no-repeat;
+  background: linear-gradient(0deg, rgba(255,255,255,1) 10%, #00a7e1 59%) no-repeat;
   overflow: scroll;
 }
 .v-main{

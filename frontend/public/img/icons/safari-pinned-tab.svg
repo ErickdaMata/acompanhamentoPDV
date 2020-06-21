@@ -1,21 +1,30 @@
-<svg width="40" height="48" xmlns="http://www.w3.org/2000/svg">
- <g>
-  <title>background</title>
-  <rect x="-1" y="-1" width="42" height="50" id="canvas_background" fill="none"/>
- </g>
-
- <g>
-  <title>Layer 1</title>
-  <path id="svg_1" d="m38.434824,6.180857l-0.06387,40.3154l-32.12374,0l-0.0625,-4.12484l28.31139,-0.00001l0.06248,-36.18605l3.87624,-0.0045z" stroke="#000000" fill="#000000"/>
-  <rect fill="none" stroke="#000000" x="1.922028" y="1.85493" width="32.602726" height="40.410942" id="svg_23"/>
-  <rect class="st12" height="1.6" width="24.2" x="6.044329" y="10.990985" id="svg_9" fill="#000000"/>
-  <rect class="st12" height="1.6" width="24.2" x="6.10677" y="14.54099" id="svg_10" fill="#000000"/>
-  <rect class="st12" height="1.6" width="24.2" x="6.10677" y="17.84099" id="svg_11" fill="#000000"/>
-  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="21.04099" id="svg_13" fill="#000000"/>
-  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="24.34099" id="svg_14" fill="#000000"/>
-  <rect class="st12" height="1.6" width="13.7" x="6.10677" y="27.64099" id="svg_16" fill="#000000"/>
-  <polyline fill="none" stroke="null" stroke-width="null" stroke-opacity="null" points="34.52232816815376,1.7550077438354492 34.52232816815376,1.7550077438354492 " id="svg_27" stroke-linecap="round"/>
-  <polyline fill="none" stroke-width="null" stroke-opacity="null" points="67.21582543849945,30.85732650756836 67.21582543849945,30.85732650756836 " id="svg_28" stroke-linecap="round" stroke="null"/>
-  <polyline fill="none" stroke-width="null" stroke-opacity="null" points="34.55656889081001,1.7207660675048828 34.55656889081001,1.7207660675048828 " id="svg_29" stroke-linecap="round" stroke="null"/>
- </g>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="700.000000pt" height="700.000000pt" viewBox="0 0 700.000000 700.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.11, written by Peter Selinger 2001-2013
+</metadata>
+<g transform="translate(0.000000,700.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M678 6913 c-2 -10 -3 -1413 -3 -3118 l1 -3100 322 -3 c177 -1 323 -6
+323 -10 2 -12 7 -276 9 -459 l2 -173 2489 0 c1369 0 2489 3 2490 8 3 21 13
+6184 10 6207 -1 6 -106 10 -296 9 l-295 0 0 328 0 328 -2524 0 c-2395 0 -2524
+-1 -2528 -17z m4942 -3103 l-2 -3010 -2416 2 -2417 3 -1 3000 c0 1650 1 3003
+4 3008 2 4 1090 7 2418 7 l2415 0 -1 -3010z"/>
+<path d="M1359 5483 c-3 -21 -5 -219 -2 -228 2 -7 613 -9 1811 -8 994 0 1819
+2 1833 2 l27 1 -1 120 -1 120 -1833 0 c-1008 0 -1833 -3 -1834 -7z"/>
+<path d="M1369 4948 c-1 -2 -2 -56 -3 -120 l-1 -118 1835 0 1836 0 0 120 0
+120 -1833 0 c-1008 0 -1833 -1 -1834 -2z"/>
+<path d="M1369 4443 c-5 -35 -2 -226 4 -230 5 -3 2370 -6 3508 -3 l155 0 0
+120 0 120 -1833 0 c-1008 0 -1834 -3 -1834 -7z"/>
+<path d="M1367 3955 c-2 -5 -3 -59 -2 -120 l1 -110 1037 -1 c739 0 1037 2
+1038 10 6 64 2 219 -6 224 -17 12 -2064 9 -2068 -3z"/>
+<path d="M1371 3460 c-4 -3 -6 -57 -6 -120 l1 -115 1037 -1 c948 -1 1037 0
+1038 15 6 75 2 214 -6 219 -12 8 -2053 9 -2064 2z"/>
+<path d="M1372 2960 c-6 -4 -7 -110 -3 -212 l1 -26 1037 1 1037 2 1 113 c0 63
+-2 117 -5 121 -6 7 -2058 9 -2068 1z"/>
+</g>
 </svg>

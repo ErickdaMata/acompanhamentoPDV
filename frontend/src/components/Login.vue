@@ -4,11 +4,11 @@
             <div id="cabecalho">
                 <label class="text-center branco--text
                     font-weight-bold text-h4" >
-                    {{ titulo }}
+                    {{ appNome }}
                 </label>
                 <label class="text-right branco--text
                     font-weight-light">
-                    {{ versao }}
+                    {{ appVersao }}
                 </label>
             </div>
 
@@ -64,12 +64,12 @@ export default {
   },
   data(){
     return {
+        appNome: this.$store.state.appNome,
+        appVersao: this.$store.state.appVersao,
         iconeUsuario: mdiAccountBox,
         iconeSenha: mdiLock,
         iconeVerSenha: mdiEye,
         iconeVerSenhaOff: mdiEyeOff,
-        titulo: "NovaTech PDV",
-        versao: "Versão 0.1.0",
         labelLogin: "Entrar",
         exibirSenha : false,
         usuario: {},
@@ -104,11 +104,19 @@ export default {
                     })
                 .catch(err => {
                     console.log('ERRO: '+ err.response.data)
+                    console.log('ERRO:')
                     this.$store.commit('exibirSnackbar', {
                             texto: err.response.data,
                             tipo:"alerta"
                         })   
-                })
+            })
+            .catch((err)=> {
+                this.$store.commit('exibirSnackbar', {
+                            texto: 'Desculpe, houve um problema com o serviço. Contate-nos se o problema persistir',
+                            tipo:"alerta",
+                            tempo: 8000
+                        })   
+            })
     },
     esqueceuSenha(){
         this.$store.commit('comutarExibirMensagemSenha', this.exibirMensagemSenha)
@@ -116,9 +124,6 @@ export default {
     atualizarOnline(){
         this.online = navigator.onLine
     }
-  },
-  watch:{
-
   },
   beforeMount(){
       window.addEventListener('online', this.atualizarOnline)

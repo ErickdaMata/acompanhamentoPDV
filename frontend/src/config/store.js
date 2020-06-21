@@ -6,6 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        appNome: 'Nova Tech PDV!',
+        appVersao: 'Versão: 1.0.0',
         sessao: '',
         exibirMensagemSenha: false,
         snackbar: 
@@ -13,7 +15,7 @@ export default new Vuex.Store({
                 exibir: '',
                 texto: '',
                 cor: '',
-                tempo: 6000,    
+                tempo: 6000,
             },
         fullscreen: false
     },
@@ -39,6 +41,8 @@ export default new Vuex.Store({
                 axios.defaults.headers.common['Authorization'] = `bearer ${sessao.token}`
             else
                 delete axios.defaults.headers.common['Authorization']
+
+            console.log("Salvou Sessao. Axios: ", axios.defaults.headers.common['Authorization'])
         },
         comutarExibirMensagemSenha(state){
             state.exibirMensagemSenha = !state.exibirMensagemSenha

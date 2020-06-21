@@ -7,15 +7,10 @@ const NOME_CACHE_DINAMICO = 'dinamico-v1'
 
 const ARQUIVOS = [
     '/',
-    '/index.html',
-    '/offline',
-    '/js/idb.js',
     '/js/indexDB.js',
-    '/js/chunk-vendors.js',
     '/js/app.js',
     '/js/promise.js',
     '/js/fetch.js',
-    'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
     'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900',
 ]
 
@@ -28,7 +23,7 @@ self.addEventListener('install', function (event) {
             //No cache específico passado
             .then((cache) => {
                 //Adiciona todos os itens por Array, cada elemento será uma Promise
-                cache.addAll('ARQUIVOS')
+                cache.addAll(ARQUIVOS)
             })
     )
 })
@@ -135,27 +130,7 @@ self.addEventListener('sync', (event) => {
         return init
     })
     .then((config) => {
-        if(event.tag === 'sync-valida-token'){
-            
-            fetch("http://localhost:9000/val", config)
-                .then((response) => {
-                    return response.json()
-                })
-                .then((tokenValidado) => {
-                    
-                    if(tokenValidado === false){
-                        console.log('THROW - Token Invalido')
-                        throw 'token invalido'
-                    }
-                })
-                .catch((err) => {
-                    informar(err)            
-                })        
-        }
-        return config
-    })
-    .then((config) => {
-        if(event.tag === 'sync-relatorios' || event.tag === 'sync-valida-token'){
+        if(event.tag === 'sync-relatorios'){
             fetch("http://localhost:9000/relatorios", config)
                 .then((response) => {
                     return response.json()
@@ -171,7 +146,7 @@ self.addEventListener('sync', (event) => {
                 })
                 .catch((err) => {
                     console.log(prefix + "Erro na recuperação", err)
-                    throw 'backsync fail'
+                    informar('backsync fail')
                 })
         }
     })

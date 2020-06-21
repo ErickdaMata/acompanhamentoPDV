@@ -4,45 +4,50 @@
             v-model="drawer"
             v-show='!fullscreen'
             app
+            
             >
-            <template v-slot:prepend>
+            <template v-slot:prepend 
+                class="pt-4">
                 <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-title>{{nomeApp}}</v-list-item-title>
-                    <v-list-item-subtitle>{{versaoApp}}</v-list-item-subtitle>
+                    <v-list-item-title>{{appNome}}</v-list-item-title>
+                    <v-list-item-subtitle>{{appVersao}}</v-list-item-subtitle>
                 </v-list-item-content>
                 </v-list-item>
             </template>
+            <v-divider
+                class="my-4"
+            ></v-divider>
             <v-list dense>
                 <v-list-item link @click="home">
                     <v-list-item-action>
-                        <v-icon>{{iconeInicio}}</v-icon>
+                        <v-icon>{{navIconeInicio}}</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>{{textoInicio}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link @click="sair">
-                    <v-list-item-action>
-                        <v-icon>{{iconeSair}}</v-icon>
-                    </v-list-item-action >
-                    <v-list-item-content>
-                        <v-list-item-title>{{textoSair}}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
                 <v-list-item link @click="pedirPermissaoNotificacoes"
                     v-if="suportaNotificacao">
                     <v-list-item-action>
-                        <v-icon>{{notificacao == 'granted'? iconeNotificaoPermitida :
-                                        (notificacao === 'denied'? iconeNotificaoNegada : iconeNotificao ) }}</v-icon>
+                        <v-icon>{{notificacao == 'granted'? navIconeNotificaoPermitida :
+                                        (notificacao === 'denied'? navIconeNotificaoNegada : navIconeNotificao ) }}</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title>{{textoNotificacao}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item link @click="sair">
+                    <v-list-item-action>
+                        <v-icon>{{navIconeSair}}</v-icon>
+                    </v-list-item-action >
+                    <v-list-item-content>
+                        <v-list-item-title>{{textoSair}}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
+ 
         <v-app-bar
             app
             v-show='!fullscreen'
@@ -57,7 +62,7 @@
             </v-layout>
         </v-app-bar>
         <v-main>
-            <v-overlay v-model="carregando">
+            <v-overlay v-model="carregando" >
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
             <!-- Será passado para o componente renderizado a lista de empresas -->
@@ -85,33 +90,38 @@ import { mdiBellOutline, mdiBellOff, mdiBellCheck } from '@mdi/js'
 export default {
     data(){
         return{
-            nomeApp: 'Nova Tech PDV',
-            versaoApp: '1.0.0',
-            drawer: null,
-            iconeInicio: mdiHomeOutline,
-            iconeSair: mdiLogoutVariant,
-            iconeNotificao: mdiBellOutline,
-            iconeNotificaoNegada: mdiBellOff,
-            iconeNotificaoPermitida: mdiBellCheck,
-            textoInicio: 'Tela Inicial',
-            textoSair: 'Sair',
-            textoNotificacao: 'Quero receber notificações',
             titulo: 'Relatórios',
+
+            carregando: true,
+            sessao: this.$store.state.sessao,
+            appNome: this.$store.state.appNome,
+            appVersao: this.$store.state.appVersao,
+            
+            drawer: null,
+            navIconeInicio: mdiHomeOutline,
+            navIconeSair: mdiLogoutVariant,
+            navIconeNotificao: mdiBellOutline,
+            navIconeNotificaoNegada: mdiBellOff,
+            navIconeNotificaoPermitida: mdiBellCheck,
+            
+            textoInicio: 'Tela Inicial',
+            textoNotificacao: 'Quero receber notificações',
+            textoSair: 'Sair',
+
             empresasArray: ['Padaria e Açougue', 'Farmácia Ltda', 'Pet Shop Cara Nova', 'Supermercado Bom e Barato', 'Loja de Roupas e Calçados'],
             horarioArray: ['15/06/2020 19:20:32', '15/06/2020 19:10:12', '15/06/2020 19:13:27', '15/06/2020 19:14:42', '15/06/2020 19:13:11'],
             relatoriosArray: ['Relatório','Relatorio','Relatorio','Relatorio','Relatorio'],
-            carregando: true,
-            backSync: ('SyncManager' in window),    
-            suportaNotificacao: window.Notification,
+            
             notificacao: Notification.permission,
+            suportaNotificacao: window.Notification,
             permitiuNotificacao: this.notificacao === 'granted'? true:false
         }
     },
-    computed: 
-        mapGetters({
-            sessao: 'getSessao',
+    computed: {
+        ...mapGetters({
             fullscreen: 'getFullscreen'
         })
+    }
     ,
     methods:{
         notificarSnackbar(tipo, mensagem, tempo){
@@ -128,7 +138,7 @@ export default {
                     return this.sair('falha')
                 }
                 if(event.data.msg === 'backsync ok'){
-                    return this.obterRelatoriosIndexedDB()
+                    return this.consumirIndexedDB()
                 }
                 if(event.data.msg === 'backsync fail'){
                     if(navigator.onLine){
@@ -147,23 +157,13 @@ export default {
             else
                 localStorage.removeItem(userKey)
         },
-        async recuperarSessao(){
-            //Recupera os dados da sessão no navegador
-            //Verifica se IndexedDB está disponível para uso
-            if(window.indexedDB){
-                console.log("LEITURA IndexedDB")
-                const sessao = await obterIndexDB('token') // eslint-disable-line no-undef
-                return sessao[0]
-            }
-            //Se não estiver, recupera do Local Storage
-            else{
-                const sessao = localStorage.getItem(userKey)
-                return JSON.parse(sessao)
-            }
-        },
         home(){
             //Redireciona o usuário para a página inicial
-            this.$router.push( {path: '/'} )
+            //a tela imediatamente anterior ao relatório
+            if(this.$route.name === 'Relatorio')
+                this.$router.go( -1 )
+            else
+                this.drawer = null
         },
         sair(motivo){
             if(motivo === 'falha')
@@ -173,36 +173,6 @@ export default {
             //Redireciona o usuário para a página inicial
             this.$router.push( {path: '/login'} )
         },
-
-        async validarSessao(){
-            console.log('iniciou validação')
-            if(navigator.onLine){
-                //Se sessão armazenada é vazia ou undefined
-                if(!this.sessao) {
-                    //Para de exibir overlay carregando
-                    this.carregando = false
-                    //Retorna o usuário para tela principal
-                    return this.$router.push({path: '/login'})
-                }
-                //Caso o usuário tenha sessão, o sistema valida o token
-                //Retorna true | false
-                const res = await axios.post(`${baseURL}/val`, this.sessao)
-                
-                //Caso a resposta seja 'true'
-                if(res.data){
-                    this.recuperarRelatorios(true)
-                }
-                //Caso a resposta seja 'false'    
-                else{
-                    this.sair('falha')
-                }
-            } 
-            //Caso não esteja online
-            else {
-                this.recuperarRelatorios(false)
-            }
-
-        },
         obterRelatoriosSemSW(){
             console.log('obterRelatoriosSemSW()')
             //Requisição para obter os relatórios disponíveis
@@ -210,27 +180,32 @@ export default {
                 .then(res => res.data)
                 .then(dados => {
                     dados.empresas.map(empresa => {
+                        console.log("empresa:", empresa)
                         this.empresasArray.push(empresa.nome)
                         this.relatoriosArray.push(empresa.rel)
+                        this.horarioArray.push(empresa.hora)
                     })
                     //Termina a animação
                     this.carregando = false
                 })
                 .catch(err => {
                     if (!this.sessao){
-                        return this.sair()    
+                        return this.sair()
                     } else {
+                        console.log(err)
                         this.notificarSnackbar('info', 'Não foi possível carregar seus dados, tente novamente.')
                     }
                 })
         },
-        obterRelatoriosIndexedDB(){
-            console.log('obterRelatoriosIndexedDB')
+        consumirIndexedDB(){
+            console.log('consumirIndexedDB')
             obterIndexDB('relatorios') // eslint-disable-line no-undef
                 .then(empresas => {
                     empresas.map(empresa => {
+                        console.log("empresa:", empresa)
                         this.empresasArray.push(empresa.nome)
                         this.relatoriosArray.push(empresa.rel)
+                        this.horarioArray.push(empresa.hora)
                     })
                 })
                 .then(()=> {
@@ -241,12 +216,11 @@ export default {
                     this.notificarSnackbar('info', 'Não foi possível carregar seus dados, tente novamente.')
                 })
         },
-        recuperarRelatorios(tokenValidado){
-            console.log("recuperarRelatorios("+tokenValidado+")")
+        recuperarRelatorios(){
             //Inicia verificação para Background Sync
             if('serviceWorker' in navigator && 'SyncManager' in window){
                 navigator.serviceWorker.ready.then((sw) => {
-                    sw.sync.register(tokenValidado? 'sync-relatorios':'sync-valida-token')
+                    sw.sync.register('sync-relatorios')
                 })
                 .then(() => {
                     if (!navigator.onLine){
@@ -256,10 +230,7 @@ export default {
                 .catch((err) => {
                     console.log("[RelatorioApp] Erro: ", err)
                     if(navigator.onLine){
-                        if(tokenValidado)
-                            this.obterRelatoriosSemSW()
-                        else
-                            this.sair('falha')
+                        this.obterRelatoriosSemSW()
                     }
                     else{
                         this.notificarSnackbar('info', 
@@ -269,26 +240,6 @@ export default {
             } else {
                 this.obterRelatoriosSemSW()
             }
-        },
-        async gerenciarCarregamento(){
-            //Caso não exista uma sessão ativa, será necessário
-            //tentar recuperar uma sessão salva no navegador
-            if(this.sessao){
-                console.log("[Vue] possui sessao")
-                //Se já possui uma sessão, usa o token atual para recuperar os dados
-                return this.recuperarRelatorios(true)
-            }
-            console.log("[Vue] NÃO possui sessao")
-            //Verifica se há um token armazenado
-            const sessaoArmazenada = await this.recuperarSessao()
-            this.$store.commit('salvarSessao', sessaoArmazenada) 
-            
-            //Valida a sessão e recupera os relatórios
-            return this.recuperarRelatorios(false)
-            /* navigator.serviceWorker.ready.then((sw) => {
-                    sw.sync.register('sync-relatorios')
-                        this.carregando = false
-                }) */
         },
         pedirPermissaoNotificacoes(){
             if(Notification.permission == 'denied'){
@@ -302,54 +253,34 @@ export default {
                     }
                 })
             }
+            this.notificacao = Notification.permission
         }
     },
-    beforeMount(){
+    created(){
         this.$store.fullscreen = 'false'
-        
-        this.gerenciarCarregamento()
         this.registrarMessageChannel()
-
-        setTimeout(() => {
-            this.obterRelatoriosSemSW()
-        }, 6000);
+        this.recuperarRelatorios()
     }
 }
 </script>
 
 <style scoped>
-.relatorio-view{
+.v-main{
     margin:0;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    overflow-x: hidden;
     height: 95vh;
 }
 
-#barra-superior{
-    padding: 5px 5px 10px;
-    width: 100%;
-    display: flex;
-    align-self: flex-start;
-    align-items: center;
-    background-color: #1C77C3;
+.v-main::-webkit-scrollbar {
+    width: 0 !important
 }
 
-#barra-superior label{
-    height: 100%;
-    font-size: 8vw;
-    text-align: left;
-    color: #F6F7EB;
-    font-weight: 500;
-    flex-grow: 1;
+.v-main {
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
 }
 
-#barra-superior img{
-    height: 10vw;
-    align-self: flex-end;
-}
-
-.sombra{
-    box-shadow: 2px 0px 5px #000a;
-}
 </style>

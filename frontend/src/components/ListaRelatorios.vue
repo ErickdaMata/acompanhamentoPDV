@@ -11,7 +11,9 @@
                                     class="headline mb-1">
                                     {{ empresa }}
                                 </v-list-item-title>
-                                <v-list-item-subtitle>
+                                <v-list-item-subtitle
+                                    class="font-weight-light
+                                        text-right">
                                     {{ horarios[id] }}
                                 </v-list-item-subtitle>
                         </v-card>

@@ -48,5 +48,3 @@ const limparIndexDB = function(idStore) {
             return transacao.complete
         })    
 }
-
-exports = {armazenarIndexDB, obterIndexDB}
