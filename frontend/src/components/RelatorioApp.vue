@@ -27,7 +27,7 @@
                         <v-list-item-title>{{textoInicio}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link @click="pedirPermissaoNotificacoes"
+                <!-- <v-list-item link @click="pedirPermissaoNotificacoes"
                     v-if="suportaNotificacao">
                     <v-list-item-action>
                         <v-icon>{{notificacao == 'granted'? navIconeNotificaoPermitida :
@@ -36,7 +36,7 @@
                     <v-list-item-content>
                         <v-list-item-title>{{textoNotificacao}}</v-list-item-title>
                     </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
                 <v-list-item link @click="sair">
                     <v-list-item-action>
                         <v-icon>{{navIconeSair}}</v-icon>
@@ -53,7 +53,7 @@
             v-show='!fullscreen'
             color="lsegunda"
             class="px-5"
-        >   <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        >   <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-layout class="justify-space-between d-flex
                 font-weight-bold branco--text">
                 <v-toolbar-title class="text-sm-h5 text-md-h4 text-lg-h3">
@@ -108,13 +108,13 @@ export default {
             textoNotificacao: 'Quero receber notificações',
             textoSair: 'Sair',
 
-            empresasArray: ['Padaria e Açougue', 'Farmácia Ltda', 'Pet Shop Cara Nova', 'Supermercado Bom e Barato', 'Loja de Roupas e Calçados'],
-            horarioArray: ['15/06/2020 19:20:32', '15/06/2020 19:10:12', '15/06/2020 19:13:27', '15/06/2020 19:14:42', '15/06/2020 19:13:11'],
-            relatoriosArray: ['Relatório','Relatorio','Relatorio','Relatorio','Relatorio'],
+            empresasArray: [],
+            horarioArray: [],
+            relatoriosArray: [],
             
-            notificacao: Notification.permission,
+            /* notificacao: Notification.permission,
             suportaNotificacao: window.Notification,
-            permitiuNotificacao: this.notificacao === 'granted'? true:false
+            permitiuNotificacao: this.notificacao === 'granted'? true:false */
         }
     },
     computed: {
@@ -179,7 +179,8 @@ export default {
             axios.post(baseURL + '/relatorios', this.sessao)
                 .then(res => res.data)
                 .then(dados => {
-                    dados.empresas.map(empresa => {
+
+                    dados.lista.map(empresa => {
                         console.log("empresa:", empresa)
                         this.empresasArray.push(empresa.nome)
                         this.relatoriosArray.push(empresa.rel)
@@ -241,7 +242,7 @@ export default {
                 this.obterRelatoriosSemSW()
             }
         },
-        pedirPermissaoNotificacoes(){
+       /*  pedirPermissaoNotificacoes(){
             if(Notification.permission == 'denied'){
                 this.notificarSnackbar('info', 'É necessário alterar manualmente a permissão em seu navegador', 8000)
             }
@@ -254,7 +255,7 @@ export default {
                 })
             }
             this.notificacao = Notification.permission
-        }
+        } */
     },
     created(){
         this.$store.fullscreen = 'false'

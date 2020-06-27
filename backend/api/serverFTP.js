@@ -18,4 +18,3 @@ async function exemplo(){
         console.log(error)
     }
 }
-

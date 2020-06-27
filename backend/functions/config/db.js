@@ -10,9 +10,21 @@
  *          databaseURL: "https://pdv-estagio.firebaseio.com"
  *      }); 
 */
+
 const admin = require("firebase-admin")
-admin.initializeApp()
-const db = admin.firestore().collection('db')
+
+const serviceAccount = require("B:/ESTAGIO/acompanhamentoPDV/pdv-estagio-firebase-adminsdk-63t5t-b71bd47143.json")
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://pdv-estagio.firebaseio.com"
+ }); 
+
+
+//admin.initializeApp()
+
+const usuarios = admin.firestore().collection('db')
+const relatorios = admin.firestore().collection('rel')
 
 //Implementação da troca de informações com DB.
 
@@ -22,7 +34,7 @@ const getUsuario = (usuarioDigitado) => {
         
             //Inicia uma nova consulta com o DB Firestore
             //Query: obter o UID (User ID) '==' ao param usuarioDigitado
-            const query = db.where('uid', '==', usuarioDigitado).get()
+            const query = usuarios.where('uid', '==', usuarioDigitado).get()
                             //A quary retorna um objeto snapshot com todos os matches
                             .then(snapshot => {
                                 //Caso não haja usuário
@@ -59,4 +71,20 @@ const getUsuario = (usuarioDigitado) => {
         } 
     )   
 }
-module.exports = {getUsuario}
+
+const getRelatorios = (codigoUsuario) => {
+    
+    return new Promise(function (resolve, reject) {
+        relatorios.doc(codigoUsuario).get()
+        .then(doc => {
+            if(!doc.exists){
+                reject('Dados não encontrados')
+            }
+            else {
+                resolve(doc.data())
+            }
+        })
+    })
+}
+
+module.exports = {getUsuario, getRelatorios}

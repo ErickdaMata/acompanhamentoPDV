@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        appNome: 'Nova Tech PDV!',
+        appNome: 'i9PDV',
         appVersao: 'Versão: 1.0.0',
         sessao: '',
         exibirMensagemSenha: false,

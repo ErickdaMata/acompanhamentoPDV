@@ -1,4 +1,4 @@
-//const JsFTP = require('jsftp')
+/* //const JsFTP = require('jsftp')
 const {authFTP} = require ('../.env')
 const v = console.log
 
@@ -104,4 +104,4 @@ serverFTP.auth(authFTP.user, authFTP.password, (err, res) => {
 }) */
 
 
-//ftp://ftp.lastech.com.br/lastech.com.br/web/downloads/Ric/Val/001-010-0001247/val.txt
+//ftp://ftp.lastech.com.br/lastech.com.br/web/downloads/Ric/Val/001-010-0001247/val.txt */

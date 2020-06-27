@@ -1,6 +1,6 @@
 {
-    "name": "Relatórios Nova Tech PDV",
-    "short_name": "Nova Tech PDV",
+    "name": "Relatórios i9PDV",
+    "short_name": "i9PDV",
     "icons": [
         {
             "src": "/img/icons/maskable-icon-256x256.png",
@@ -66,6 +66,6 @@
     "orientation": "any",
     "background_color": "#F6F7EB",
     "theme_color": "#00A7E1",
-    "description": "Aplicação para visualização de relatórios de acompanhamento para clientes Nova Tech.",
+    "description": "Aplicação para visualização de relatórios de acompanhamento para clientes i9PDV.",
     "lang": "pt-BR"
 }

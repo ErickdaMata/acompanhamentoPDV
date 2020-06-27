@@ -131,7 +131,7 @@ export default {
   },
   beforeDestroy(){
       window.removeEventListener('online', this.atualizarOnline)
-      window.addEventListener('offline', this.atualizarOnline)
+      window.removeEventListener('offline', this.atualizarOnline)
   }
 }
 </script>

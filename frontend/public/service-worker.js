@@ -2,6 +2,9 @@
 self.importScripts('./js/idb.js')
 self.importScripts('./js/indexDB.js')
 
+const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
+//const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
+
 const NOME_CACHE_ESTATICO = 'precache-v1'
 const NOME_CACHE_DINAMICO = 'dinamico-v1'
 
@@ -131,13 +134,13 @@ self.addEventListener('sync', (event) => {
     })
     .then((config) => {
         if(event.tag === 'sync-relatorios'){
-            fetch("http://localhost:9000/relatorios", config)
+            fetch(baseURL, config)
                 .then((response) => {
                     return response.json()
                 })
                 .then((relatorios)=> {
                     console.log(prefix + "Dados recuperados", relatorios)
-                    relatorios.map(relatorio => {
+                    relatorios.lista.map(relatorio => {
                         armazenarIndexDB(dbStoreBS, relatorio)
                     })
                 })
