@@ -4,7 +4,7 @@
  * 
  *  -------- Arquivo importado pelo Consign  --------
  *  Para possibilitar a conexão com DB durante o desenvolvimento:
- *      const serviceAccount = require("B:/ESTAGIO/acompanhamentoPDV/pdv-estagio-firebase-adminsdk-63t5t-b71bd47143.json")
+ *      const serviceAccount = require("path/to/pdv-estagio-firebase-adminsdk-63t5t-b71bd47143.json")
  *      admin.initializeApp({
  *          credential: admin.credential.cert(serviceAccount),
  *          databaseURL: "https://pdv-estagio.firebaseio.com"
@@ -13,15 +13,7 @@
 
 const admin = require("firebase-admin")
 
-const serviceAccount = require("B:/ESTAGIO/acompanhamentoPDV/pdv-estagio-firebase-adminsdk-63t5t-b71bd47143.json")
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://pdv-estagio.firebaseio.com"
- }); 
-
-
-//admin.initializeApp()
+admin.initializeApp(); 
 
 const usuarios = admin.firestore().collection('db')
 const relatorios = admin.firestore().collection('rel')
