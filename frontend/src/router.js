@@ -19,9 +19,12 @@ export default new Router({
         {
             path: '/',
             beforeEnter: (to, from, next) => {
-                console.log("TO", to === from)
-                console.log("FROM", from)
-                console.log("NEXT", next)
+
+                if(!navigator.onLine){
+                    next('/offline')
+                    return
+                }
+
                 if(from.name == 'Login' || from.name == 'Relatorio'){
                     next()
                 }

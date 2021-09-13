@@ -2,16 +2,17 @@
 self.importScripts('./js/idb.js')
 self.importScripts('./js/indexDB.js')
 
-const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
-//const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
+//const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
+const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
 
 const NOME_CACHE_ESTATICO = 'precache-v1'
 const NOME_CACHE_DINAMICO = 'dinamico-v1'
 
-const ARQUIVOS = [
+const CACHE_REQUISICOES = [
     '/',
-    '/js/indexDB.js',
     '/js/app.js',
+    '/js/idb.js',
+    '/js/indexDB.js',
     '/js/promise.js',
     '/js/fetch.js',
     'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900',
@@ -26,7 +27,7 @@ self.addEventListener('install', function (event) {
             //No cache específico passado
             .then((cache) => {
                 //Adiciona todos os itens por Array, cada elemento será uma Promise
-                cache.addAll(ARQUIVOS)
+                cache.addAll(CACHE_REQUISICOES)
             })
     )
 })

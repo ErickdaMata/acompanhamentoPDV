@@ -35,7 +35,7 @@ export default {
     },
     methods:{
         inicio(){
-            this.$router.push({path: '/'})
+            this.$router.push({path: '/login'})
         }
     }
 }
