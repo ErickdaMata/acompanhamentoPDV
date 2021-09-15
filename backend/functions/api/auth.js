@@ -18,7 +18,7 @@ module.exports = app => {
             //Retorna erro 400 (Bad Request)
             return res.status(400).send('Usuário ou senha não informados')
             
-        //Recupera o usuário a partir do DB apartir do nome de usuário
+        //Recupera o usuário no DB a partir do nome de usuário
         const user = await app.db.getUsuario(req.body.user)
             
         //Caso não exista um usuário com este nome do DB

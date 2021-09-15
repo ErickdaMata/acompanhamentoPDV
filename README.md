@@ -1,7 +1,7 @@
 # acompanhamentoPDV
-v.: 0.2.1
+v.: 1.0.0
 
-Aplicação para smartphones com visão resumida de relatórios de caixa. 
+Aplicação para smartphones com visão resumida de relatórios de caixa.
 
 Utilização de:
 Vue
@@ -11,17 +11,21 @@ Documentação disponível em:
 https://drive.google.com/open?id=1ZRPDh-EalHZZwp_FXcJ08iOmdKjaar2cFFuIVSOOrWI
 
 
-## Project setup
+Para FRONTEND:
+Executar prompt de comando a partir da pasta /frontend
+Utilizar NPM para NodeJS
+
+## Baixar dependências
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilação durante desenvolvimento (hot-reloads)
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compilação para produção
 ```
 npm run build
 ```
@@ -33,3 +37,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+Para BACKEND:
+Realiar deploy no Firebase

@@ -5,6 +5,7 @@ self.importScripts('./js/indexDB.js')
 //const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
 const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
 
+// TROCAR O NOME OU VERSÃO EM CASO DE ATUALIZAÇÃO DO CACHE
 const NOME_CACHE_ESTATICO = 'precache-v1'
 const NOME_CACHE_DINAMICO = 'dinamico-v1'
 
@@ -34,7 +35,7 @@ self.addEventListener('install', function (event) {
 
 //Chamado no momento de ativação do Service Worker
 self.addEventListener('activate', function (event) {
-    console.log('[SW]: Ativando')
+    
     //Inicia uma nova espera, para limpar o cache antigo da aplicação
     event.waitUntil(
         //Obtém todas as identificações de cache atuais
@@ -57,8 +58,6 @@ self.addEventListener('activate', function (event) {
 
 //Interceptando eventos de busca de conteúdo
 self.addEventListener('fetch', (event) => {
-
-    //console.log("FETCH" ,event.request.url.indexOf('/relatorios'))
 
     //Cria o 'proxy' para alterar a resposta
     event.respondWith(
@@ -101,53 +100,73 @@ self.addEventListener('fetch', (event) => {
     )
 })
 
+// Função para troca de mensagens entre o SW e a aplicação
 function informar(mensagem) {
+    // Broadcast para clientes do SW no navegador.
     self.clients.matchAll().then(clients => {
         clients.forEach(client => client.postMessage({msg: mensagem}))
     })
 }
 
+// Evento SYNC é registrado no SW e invocado pela aplicação
 self.addEventListener('sync', (event) => {
+    // Utilidades para o console
     const prefix = "[SW:Sync]"
     console.log(prefix)
 
+    // Abre a conexão com o Indexed DB por Promise
     obterIndexDB(dbStoreToken)
+    // encadeamento da recuperação do token
     .then((dados)=> {
         return  dados[0]
     })
+    // recuperaçao da sessão
     .then((sessao)=> {
-        
-        if(!sessao){
+
+        // Caso não haja token
+        if (!sessao) {
+            // dispara o erro
             throw 'token invalido'
         }
+
+        // Cria um novo cabeçalho para requisição HTTP
         const cabecalho = new Headers({
             "Authorization": `bearer ${sessao.token}`,
             "Content-Type": "application/json;charset=utf-8",
             "Accept": "application/json, text/plain, */*"
         })
+        // Parametriza requisição HTTP
         const init = {
             method: 'POST',
             headers: cabecalho,
             mode: 'cors',
             body: JSON.stringify(sessao)
-        } 
+        }
+        // Retorna para o encadeamento
         return init
     })
+    // Recebe a configuração do cabeçalho HTTP
     .then((config) => {
-        if(event.tag === 'sync-relatorios'){
+        // Verifica a tag da chamada
+        if (event.tag === 'sync-relatorios') {
+            // fetch para chamada HTTP em Promise
             fetch(baseURL, config)
+                // Retorno é modificao para JSON
                 .then((response) => {
                     return response.json()
                 })
+                // Formato JSON é armazenado no Indexed DB
                 .then((relatorios)=> {
                     console.log(prefix + "Dados recuperados", relatorios)
                     relatorios.lista.map(relatorio => {
                         armazenarIndexDB(dbStoreBS, relatorio)
                     })
                 })
+                // Comunica sucesso para aplicação
                 .then(()=> {
                     informar('backsync ok')
                 })
+                // Em caso de ERRO
                 .catch((err) => {
                     console.log(prefix + "Erro na recuperação", err)
                     informar('backsync fail')
