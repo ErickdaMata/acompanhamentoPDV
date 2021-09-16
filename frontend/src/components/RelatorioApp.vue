@@ -27,16 +27,6 @@
                         <v-list-item-title>{{textoInicio}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <!-- <v-list-item link @click="pedirPermissaoNotificacoes"
-                    v-if="suportaNotificacao">
-                    <v-list-item-action>
-                        <v-icon>{{notificacao == 'granted'? navIconeNotificaoPermitida :
-                                        (notificacao === 'denied'? navIconeNotificaoNegada : navIconeNotificao ) }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>{{textoNotificacao}}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item> -->
                 <v-list-item link @click="sair">
                     <v-list-item-action>
                         <v-icon>{{navIconeSair}}</v-icon>
@@ -112,9 +102,6 @@ export default {
             horarioArray: [],
             relatoriosArray: [],
             
-            /* notificacao: Notification.permission,
-            suportaNotificacao: window.Notification,
-            permitiuNotificacao: this.notificacao === 'granted'? true:false */
         }
     },
     computed: {
@@ -242,20 +229,7 @@ export default {
                 this.obterRelatoriosSemSW()
             }
         },
-       /*  pedirPermissaoNotificacoes(){
-            if(Notification.permission == 'denied'){
-                this.notificarSnackbar('info', 'É necessário alterar manualmente a permissão em seu navegador', 8000)
-            }
-            else {
-                Notification.requestPermission((resultado) =>{
-                    if(resultado == 'granted'){
-                        this.permitiuNotificacao = true
-                        this.notificarSnackbar('info', 'Notificações habilitadas', 3000)
-                    }
-                })
-            }
-            this.notificacao = Notification.permission
-        } */
+       
     },
     created(){
         this.$store.fullscreen = 'false'

@@ -1,6 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend",
+    "\\backend\\functions",
+    "\\frontend",
+    "\\frontend\\public",
+    "\\frontend\\public\\js",
+    "\\frontend\\src",
+    "\\frontend\\src\\components",
+    "\\frontend\\src\\config",
+    "\\frontend\\src\\plugins"
   ],
+  "SelectedNode": "\\frontend\\public\\js\\indexDB.js",
   "PreviewInSolutionExplorer": false
 }
