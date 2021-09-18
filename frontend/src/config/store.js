@@ -24,7 +24,6 @@ export default new Vuex.Store({
             return state.sessao
         },
         getExibirMensagemSenha(state){
-            //console.log("From STORE:", state.exibirMensagemSenha)
             return state.exibirMensagemSenha
         },
         getSnackbar(state){

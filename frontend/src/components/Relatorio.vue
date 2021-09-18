@@ -27,7 +27,6 @@ export default {
     },
     methods: {
         exibirFullscreen(){
-            console.log('acionado'),
           this.$store.commit('comutarFullscreen')
         }
     }
@@ -36,7 +35,7 @@ export default {
 
 <style scoped>
 #bloco-relatorio{
-    font-size: 3.5vw;
+    font-size: 3.0vw;
     font-family: monospace;
     font-weight: 600;
     color: #222;
