@@ -15,7 +15,7 @@
 
       <div>
             Para alteração ou cadastramento de senha de acesso,
-          entre em contato conosco pelo número (21) 2234-5678.
+          entre em contato conosco pelo número (21) 96729-8786.
       </div>
       <div class="d-flex flex-row-reverse">
           <v-btn outlined class=""

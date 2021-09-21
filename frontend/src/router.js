@@ -98,6 +98,7 @@ export default new Router({
                             
                         })
                         .catch((err) => {
+                            console.log(err)
                             // Em caso de erro, redireciona para novo login
                             next('login')
                         })
