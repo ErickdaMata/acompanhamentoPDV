@@ -13,7 +13,7 @@
 
 const admin = require("firebase-admin")
 
-admin.initializeApp(); 
+admin.initializeApp();
 
 const usuarios = admin.firestore().collection('user')
 const relatorios = admin.firestore().collection('rel')
