@@ -1,0 +1,14 @@
+/* * * * * * * * * * *   A T E N Ç Ã O   * * * * * * * * * * *
+* Este arquivo contém as informações sigilosas do app, que são:
+*     Auth Secret: Chave aletória utilizada para gere token
+*     expTime    : Tempo em segundos para expiração do token
+*                  Seg * Min * Hora * Dia (ALTERAR SOMENTE DIA)
+*
+* Este arquivo é um M O D E L O, os dados finais deverão estar
+* em um arquivo '.env', na pasta 'functions'. Copiar e alterar.
+*/
+
+module.exports = {
+    authSecret: 'Ex3MpL0_de_uM@+_+Ch4v&-Al3@t0R14'
+   ,expTime: 60 * 60 * 24 * 100 // O token expira em 100 dias.
+}
