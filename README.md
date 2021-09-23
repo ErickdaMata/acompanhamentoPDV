@@ -1,5 +1,4 @@
 # acompanhamentoPDV
-v.: 1.0.0
 
 *Progressive Web Application* para múltiplos dispositivos para acesso via HTTPS a visão resumida de relatórios de caixa.
 
