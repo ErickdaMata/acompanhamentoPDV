@@ -15,7 +15,7 @@ const admin = require("firebase-admin")
 
 admin.initializeApp(); 
 
-const usuarios = admin.firestore().collection('db')
+const usuarios = admin.firestore().collection('user')
 const relatorios = admin.firestore().collection('rel')
 
 //Implementação da troca de informações com DB.
