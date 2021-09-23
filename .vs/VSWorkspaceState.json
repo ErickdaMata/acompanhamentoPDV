@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\functions",
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\components",
+    "\\frontend\\src\\config",
+    "\\frontend\\src\\plugins"
+  ],
+  "SelectedNode": "\\frontend\\src\\plugins\\vuetify.js",
+  "PreviewInSolutionExplorer": false
+}
