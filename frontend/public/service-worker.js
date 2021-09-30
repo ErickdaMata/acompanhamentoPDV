@@ -2,8 +2,8 @@
 self.importScripts('./js/idb.js')
 self.importScripts('./js/indexDB.js')
 
-//const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
-const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
+const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
+//const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
 
 // TROCAR O NOME OU VERSÃO EM CASO DE ATUALIZAÇÃO DO CACHE
 const NOME_CACHE_ESTATICO = 'precache-v1'
@@ -158,7 +158,7 @@ self.addEventListener('sync', (event) => {
                 // Formato JSON é armazenado no Indexed DB
                 .then((relatorios)=> {
                     console.log(prefix + "Dados recuperados", relatorios)
-                    relatorios.lista.map(relatorio => {
+                    relatorios.map(relatorio => {
                         armazenarIndexDB(dbStoreBS, relatorio)
                     })
                 })
