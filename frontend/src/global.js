@@ -9,10 +9,10 @@ const userKey = '__acompanhamentoPDV_user'
  * ::::     NECESSÁRIO ALTERAR TAMBÉM NO  S E R V I C E   W O R K E R     ::::
 */
 // URL PARA DESENVOLVIMENTO (script 'npm run serve') 
-// const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api'
+ const baseURL = 'http://localhost:5001/i9pdvcrm/us-central1/api'
 
 // URL PARA PRODUÇÃO
-const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api'
+// const baseURL = 'https://us-central1-i9pdvcrm.cloudfunctions.net/api'
 
 // Exporta as constantes para uso em toda aplicação
 module.exports = {baseURL, userKey}

@@ -18,21 +18,42 @@ module.exports = app => {
             //Retorna erro 400 (Bad Request)
             return res.status(400).send('Usuário ou senha não informados')
             
-        //Recupera o usuário no DB a partir do nome de usuário
-        const user = await app.db.getUsuario(req.body.user)
+        //Recupera o(s) usuário(s) da coleção 'gerente' com match em 'usuário'
+        const users = await app.db.getUsuarios(req.body.user)
             
-        //Caso não exista um usuário com este nome do DB
-        if(!user) 
-            //Retorna erro 400 (Bad Request)
+        // Caso não exista um usuário com este nome do DB
+        if(!users) 
+            // Retorna erro 400 (Bad Request)
             return res.status(400).send('Usuário não encontrado.')
 
-        //Após recuperar a senha do DB, valida comparando com a recebida
-        const validouSenha = function() {
-            return (req.body.senha == user.senha)? true : false
+        // Esta função realiza a validação do usuario e senha digitados,
+        // comparando os campos concatenados. Caso coincidam, retorna o
+        // 'id' do documento.
+        // Esta é uma função autoinvocada, note "()" após as chaves
+        const recuperaId = function() {
+            
+            // Assume que não há ID
+            let id = false
+            // Concatenha dos campos recebidos para comparação
+            const usuarioSenhaDigitado = ''.concat(req.body.user, req.body.senha)
+            
+            // Compara usuario e senha concatenados para todos os documentos
+            users.forEach(gerente => {
+                
+                // Caso coincidam
+                if(usuarioSenhaDigitado == gerente.usuariosenha){
+                    // Estabelece que este será o ID retornado
+                    id = gerente.id
+                    return id
+                }
+            })
+            
+            //Caso não haja coincidência dos campos, retorna 'false'   
+            return id
         }()
-
-        //Caso a senha não seja válida
-        if(!validouSenha)
+        
+        // recuperaId conterá um ID ou 'false'
+        if(!recuperaId)
             //Retorna erro 400 (Bad Request)
             return res.status(400).send('Senhas não conferem.')
         
@@ -43,7 +64,7 @@ module.exports = app => {
 
         //PAYLOAD
         const payload = {
-            id: user.id,
+            id: recuperaId,
             iat: now,
             exp: now + (expTime)
         }

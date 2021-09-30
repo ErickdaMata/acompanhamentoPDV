@@ -15,49 +15,60 @@ const admin = require("firebase-admin")
 
 admin.initializeApp(); 
 
-const usuarios = admin.firestore().collection('user')
-const relatorios = admin.firestore().collection('rel')
+const gerentes = admin.firestore().collection('gerente')
+const lojas = admin.firestore().collection('loja')
 
 //Implementação da troca de informações com DB.
 
-const getUsuario = (usuarioDigitado) => {
+const getUsuarios = (usuarioDigitado) => {
+    
     //Retorna uma Promise que será invocada pelo Auth
     return new Promise(function (resolve, reject) {
         
-            //Inicia uma nova consulta com o DB Firestore
-            //Query: obter o UID (User ID) '==' ao param usuarioDigitado
-            const query = usuarios.where('uid', '==', usuarioDigitado).get()
-                            //A quary retorna um objeto snapshot com todos os matches
+            // Inicia uma nova consulta com o DB Firestore
+            // Query: obter documentos cuja chave USUARIO contém o valor igual a usuarioDigitado
+            // O resultado é um ou mais documentos (ou registros do banco 'gerente')
+            const query = gerentes.where('USUARIO', '==', usuarioDigitado).get()
+                            //A query retorna um objeto snapshot com todos os matches
                             .then(snapshot => {
-                                //Caso não haja usuário
+                                
+                                //Caso não haja documentos no snapshot
                                 if (snapshot.empty) {
                                     //Retorna a Promise como 'null'
                                     resolve(null)
                                 }
-                                //Se houver match na snapshot
-                                const resultado = []
-                                //Para cada match da lista
+
+                                // Se houver match na snapshot,
+                                // Cria um novo array para acumular os documentos
+                                const resultados = []
+
+                                //Para cada documento do match
                                 snapshot.forEach(doc => {
-                                    //inclui o usuário no Array 'resultado'
+                                    // Inclui todos os documentos no Array 'resultados'
                                     //** Necessário para passagem correta de dados
-                                    resultado.push(doc.data())
-                                });
-                                //Retorna apenas o primeiro elemento
-                                return resultado[0]
-                            })
-                            //O usuário recuperado é passado para Promise final
-                            .then(usuarioDB => {
-                                //Um novo objeto usuário é criado com os dados retornados
-                                const usuario = {
-                                    id: usuarioDB.uid,
-                                    senha: usuarioDB.key
+                                    
+                                    const usuario = {
+                                        id: doc.id,
+                                        usuariosenha: ''.concat(doc.data().USUARIO,
+                                                                doc.data().SENHA)
                                     }
-                                //O usuário buscado do DB é retornado
-                                resolve(usuario)
+
+                                    resultados.push(usuario)
+                                });
+
+                                //Retorna o array de documentos
+                                return resultados
+                            })
+                            //O(s) documento(s) recuperado(s) é(são) passado(s) para Promise final
+                            .then(recuperados => {
+                                
+                                // A resposta conterá todos os usuários encontrados nos
+                                // documentos que atendem o filtro. 
+                                resolve(recuperados)
                             })
                             .catch(err => {
                                 //Qualquer erro é retornado como 'null'
-                                console.log('Error getting documents', err);
+                                console.log('Erro ao recuperar documentos: ', err);
                                 resolve(null)
                             });
         } 
@@ -67,7 +78,7 @@ const getUsuario = (usuarioDigitado) => {
 const getRelatorios = (codigoUsuario) => {
     
     return new Promise(function (resolve, reject) {
-        relatorios.doc(codigoUsuario).get()
+        lojas.doc(codigoUsuario).get()
         .then(doc => {
             if(!doc.exists){
                 reject('Dados não encontrados')
@@ -79,4 +90,4 @@ const getRelatorios = (codigoUsuario) => {
     })
 }
 
-module.exports = {getUsuario, getRelatorios}
+module.exports = {getUsuarios, getRelatorios}

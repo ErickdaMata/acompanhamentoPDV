@@ -20,7 +20,7 @@ module.exports = app => {
     }
 
     const strategy = new Strategy(params, (payload, done)=>{
-        app.db.getUsuario( payload.id )
+        app.db.getUsuarios( payload.id )
             .then(user => done(null, user? {...payload} : null))
             .catch(err => done(err, false))
     })

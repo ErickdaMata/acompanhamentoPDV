@@ -28,9 +28,7 @@ export default {
 </script>
 
 <style>
-*{
-  border: 0px solid white;
-}
+
 .v-application--wrap{
   background: linear-gradient(0deg, rgba(255,255,255,1) 10%, #00a7e1 59%) no-repeat;
   overflow: scroll;
@@ -41,3 +39,4 @@ export default {
   overflow: scroll;
 }
 </style> 
+
