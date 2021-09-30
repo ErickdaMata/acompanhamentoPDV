@@ -90,12 +90,8 @@ export default {
             drawer: null,
             navIconeInicio: mdiHomeOutline,
             navIconeSair: mdiLogoutVariant,
-            navIconeNotificao: mdiBellOutline,
-            navIconeNotificaoNegada: mdiBellOff,
-            navIconeNotificaoPermitida: mdiBellCheck,
             
             textoInicio: 'Tela Inicial',
-            textoNotificacao: 'Quero receber notificações',
             textoSair: 'Sair',
 
             empresasArray: [],
@@ -166,12 +162,12 @@ export default {
             axios.post(baseURL + '/relatorios', this.sessao)
                 .then(res => res.data)
                 .then(dados => {
-
-                    dados.lista.map(empresa => {
+                    console.log("FRONT>obterRelatoriosSemSW:")
+                    dados.map(empresa => {
                         console.log("empresa:", empresa)
-                        this.empresasArray.push(empresa.nome)
-                        this.relatoriosArray.push(empresa.rel)
-                        this.horarioArray.push(empresa.hora)
+                        this.empresasArray.push(empresa.apelido)
+                        this.relatoriosArray.push(this.formatarRelatorio(empresa.rel))
+                        this.horarioArray.push(empresa.dth)
                     })
                     //Termina a animação
                     this.carregando = false
@@ -188,13 +184,16 @@ export default {
         consumirIndexedDB(){
             console.log('consumirIndexedDB')
             obterIndexDB('relatorios') // eslint-disable-line no-undef
-                .then(empresas => {
-                    empresas.map(empresa => {
+                .then(dados => {
+                    console.log("FRONT>consumirIndexedDB:")
+                    dados.map(empresa => {
                         console.log("empresa:", empresa)
-                        this.empresasArray.push(empresa.nome)
-                        this.relatoriosArray.push(empresa.rel)
-                        this.horarioArray.push(empresa.hora)
+                        this.empresasArray.push(empresa.apelido)
+                        this.relatoriosArray.push(this.formatarRelatorio(empresa.rel))
+                        this.horarioArray.push(empresa.dth)
                     })
+                    //Termina a animação
+                    this.carregando = false
                 })
                 .then(()=> {
                     limparIndexDB('relatorios') // eslint-disable-line no-undef
@@ -229,6 +228,10 @@ export default {
                 this.obterRelatoriosSemSW()
             }
         },
+        formatarRelatorio(texto){
+            texto = texto.replace(/#/g, '\n')
+            return texto
+        }
        
     },
     created(){

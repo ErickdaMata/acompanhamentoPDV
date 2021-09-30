@@ -28,7 +28,9 @@ const getUsuarios = (usuarioDigitado) => {
             // Inicia uma nova consulta com o DB Firestore
             // Query: obter documentos cuja chave USUARIO contém o valor igual a usuarioDigitado
             // O resultado é um ou mais documentos (ou registros do banco 'gerente')
-            const query = gerentes.where('USUARIO', '==', usuarioDigitado).get()
+            const query = gerentes
+                            .where('USUARIO', '==', usuarioDigitado)
+                            .get()
                             //A query retorna um objeto snapshot com todos os matches
                             .then(snapshot => {
                                 
@@ -68,26 +70,83 @@ const getUsuarios = (usuarioDigitado) => {
                             })
                             .catch(err => {
                                 //Qualquer erro é retornado como 'null'
-                                console.log('Erro ao recuperar documentos: ', err);
                                 resolve(null)
                             });
         } 
     )   
 }
 
-const getRelatorios = (codigoUsuario) => {
+const getUsuarioById = (id) => {
+    
+    //Retorna uma Promise que será invocada pelo Auth
+    return new Promise(function (resolve, reject) {
+        
+        const docId = gerentes.doc(id).get()
+                        .then(doc => {
+                            
+                            if(doc.exists) {
+                                
+                                return(doc.data())    
+                            }
+                            throw new Error('Id não encontrado.')
+                        })
+                        .then(gerente => {
+                            //Um novo objeto usuário é criado com os dados retornados
+                            const usuario = {
+                                id: gerente.USUARIO,
+                                senha: gerente.SENHA
+                                }
+                                
+                            //O usuário buscado do DB é retornado
+                            resolve(usuario)
+                        })
+                        .catch( erro => {
+                            //Qualquer erro é retornado como 'null'
+                            resolve(null)
+                        })
+        } 
+    )   
+}
+
+const getRelatorios = (gerenteAutorizado) => {
     
     return new Promise(function (resolve, reject) {
-        lojas.doc(codigoUsuario).get()
-        .then(doc => {
-            if(!doc.exists){
-                reject('Dados não encontrados')
-            }
-            else {
-                resolve(doc.data())
-            }
-        })
+       
+        const query = lojas.where('GERENTE_ID', 'array-contains', gerenteAutorizado)
+                            .get()
+                            .then(snapshot => {
+                                
+                                //Caso não haja documentos no snapshot
+                                if (snapshot.empty) {
+                                    throw new Error('Não há relatórios para este ID.')
+                                }
+
+                                // Se houver match na snapshot,
+                                // Cria um novo array para acumular os documentos
+                                const relatorios = []
+
+                                //Para cada documento do match
+                                snapshot.forEach(doc => {
+                                    // Inclui todos os documentos no Array 'resultados'
+                                    //** Necessário para passagem correta de dados
+                                    const relatorio = {
+                                        apelido: doc.data().APELIDO,
+                                        dth: doc.data().DTH_UPLOAD,
+                                        rel: doc.data().REL,
+                                    }
+
+                                    relatorios.push(relatorio)
+                                });
+
+                                //Retorna o array de documentos
+                                return relatorios
+                            })
+                            .then(resposta => resolve(resposta))
+                            .catch( erro => {
+                                //Qualquer erro é retornado como 'null'
+                                resolve(null)
+                            })
     })
 }
 
-module.exports = {getUsuarios, getRelatorios}
+module.exports = {getUsuarios, getUsuarioById, getRelatorios}

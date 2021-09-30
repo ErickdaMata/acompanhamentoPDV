@@ -8,7 +8,6 @@ app.db = db
 
 consign()
     .include('./config/passport.js')
-    .then('./dev.js')
     .then('./config/middlewares.js')
     .then('./api')
     .then('./config/rotas.js')

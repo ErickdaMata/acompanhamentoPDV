@@ -9,7 +9,6 @@ const {authSecret, expTime} = require ('../.env')
 const jwt = require('jwt-simple')
 
 module.exports = app => {
-    //DEV: Simplificação do console.log
 
     const signin = async (req, res) => {
         
@@ -34,6 +33,7 @@ module.exports = app => {
             
             // Assume que não há ID
             let id = false
+
             // Concatenha dos campos recebidos para comparação
             const usuarioSenhaDigitado = ''.concat(req.body.user, req.body.senha)
             
@@ -80,11 +80,13 @@ module.exports = app => {
 
     //Função para validação do Token sem passar pelo Passport
     const validateToken = async (req, res) =>{
+
         //Dados enviados são recuperados, ou é atribuído null
         const userData = req.body || null
         try {
             //Nenhum tratamento é feito se não houver dados na requisição
             if(userData){
+                
                 //PAYLOAD será obtido decodificando o Token com a Auth Secret
                 const token = jwt.decode(userData.token, authSecret)
                 //Somente se o tempo(millis) de expiração for maior que a tempo atual
