@@ -116,19 +116,33 @@ export default {
         },
         registrarMessageChannel(){
             navigator.serviceWorker.onmessage = (event) => {
-                console.log("[VUE]: ", event.data.msg)
-                if(event.data.msg === 'token invalido'){
-                    return this.sair('falha')
-                }
-                if(event.data.msg === 'backsync ok'){
-                    return this.consumirIndexedDB()
-                }
-                if(event.data.msg === 'backsync fail'){
-                    if(navigator.onLine){
-                        this.notificarSnackbar('info', 'Parece haver problemas, estamos tentando novamente.', 2000)
+                console.log("[VUE] Message Channel: ", event.data.msg)
+                // Caso não existam relatórios para este ID,
+                // 'null' será a mensagem padrão do Service Worker
+                if(event.data.msg === 'null'){
+                    // Nesse caso o usuário é orientado a buscar o suporte técnico.
+                    this.notificarSnackbar('info'
+                                                , 'Procure nosso suporte técnico:'
+                                                + '\n Não há autorização para consultar relatórios.'
+                                                , 10000)                         
+                    return this.sair()
+                } else {
+                    if(event.data.msg === 'token invalido'){
+                        return this.sair('falha')
                     }
+                    if(event.data.msg === 'backsync ok'){
+                        return this.consumirIndexedDB()
+                    }
+                    if(event.data.msg === 'backsync fail'){
+                        if(navigator.onLine){
+                            this.notificarSnackbar('info'
+                                                    , 'Parece haver problemas, estamos tentando novamente.'
+                                                    , 2000)
+                        }
+                    }
+                    this.obterRelatoriosSemSW()
                 }
-                this.obterRelatoriosSemSW()
+                
             }
         },
         excluirToken(){
@@ -149,12 +163,14 @@ export default {
                 this.drawer = null
         },
         sair(motivo){
-            if(motivo === 'falha')
-                this.notificarSnackbar('alerta', 'Seu acesso não pode ser validado. Por favor, realize novo login.')
+            if(motivo === 'falha'){
+                this.notificarSnackbar('alerta'
+                    , 'Seu acesso não pode ser validado. Por favor, realize novo login.')
+            }
             //Apaga os dados armazenados no IndexedDB ou Local Storage
             this.excluirToken()
             //Redireciona o usuário para a página inicial
-            this.$router.push( {path: '/login'} )
+            this.$router.go(-1)
         },
         obterRelatoriosSemSW(){
             console.log('obterRelatoriosSemSW()')
@@ -163,12 +179,21 @@ export default {
                 .then(res => res.data)
                 .then(dados => {
                     console.log("FRONT>obterRelatoriosSemSW:")
-                    dados.map(empresa => {
-                        console.log("empresa:", empresa)
-                        this.empresasArray.push(empresa.apelido)
-                        this.relatoriosArray.push(this.formatarRelatorio(empresa.rel))
-                        this.horarioArray.push(empresa.dth)
-                    })
+                    if(dados){
+                        dados.map(empresa => {
+                            console.log("empresa:", empresa)
+                            this.empresasArray.push(empresa.apelido)
+                            this.relatoriosArray.push(this.formatarRelatorio(empresa.rel))
+                            this.horarioArray.push(empresa.dth)
+                        })
+                    }
+                    else {
+                        this.notificarSnackbar('info'
+                                                , 'Procure nosso suporte técnico:'
+                                                + '\n Não há autorização para consultar relatórios.'
+                                                , 10000) 
+                        return this.sair()   
+                    }
                     //Termina a animação
                     this.carregando = false
                 })
@@ -177,7 +202,8 @@ export default {
                         return this.sair()
                     } else {
                         console.log(err)
-                        this.notificarSnackbar('info', 'Não foi possível carregar seus dados, tente novamente.')
+                        this.notificarSnackbar('info'
+                                                ,'Não foi possível carregar seus dados, tente novamente.')
                     }
                 })
         },
@@ -200,7 +226,8 @@ export default {
                 })
                 .then(() => this.carregando = false)
                 .catch((err) => {
-                    this.notificarSnackbar('info', 'Não foi possível carregar seus dados, tente novamente.')
+                    this.notificarSnackbar('info'
+                                            , 'Não foi possível carregar seus dados, tente novamente.')
                 })
         },
         recuperarRelatorios(){
@@ -211,7 +238,8 @@ export default {
                 })
                 .then(() => {
                     if (!navigator.onLine){
-                        this.notificarSnackbar('info','Você está offline, mas vamos continuar tentando buscar seus dados.')
+                        this.notificarSnackbar('info'
+                                                ,'Você está offline, mas vamos continuar tentando buscar seus dados.')
                     }        
                 })
                 .catch((err) => {
@@ -220,8 +248,8 @@ export default {
                         this.obterRelatoriosSemSW()
                     }
                     else{
-                        this.notificarSnackbar('info', 
-                                'Verifique sua conexão e tente novamente.')
+                        this.notificarSnackbar('info' 
+                                                ,'Verifique sua conexão e tente novamente.')
                     }
                 })
             } else {

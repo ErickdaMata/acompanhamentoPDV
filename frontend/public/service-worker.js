@@ -2,8 +2,8 @@
 self.importScripts('./js/idb.js')
 self.importScripts('./js/indexDB.js')
 
-const baseURL = 'http://localhost:5001/pdv-estagio/us-central1/api/relatorios'
-//const baseURL = 'https://us-central1-pdv-estagio.cloudfunctions.net/api/relatorios'
+const baseURL = 'http://localhost:5001/i9pdvcrm/us-central1/api/relatorios'
+//const baseURL = 'https://us-central1-i9pdvcrm.cloudfunctions.net/api/relatorios'
 
 // TROCAR O NOME OU VERSÃO EM CASO DE ATUALIZAÇÃO DO CACHE
 const NOME_CACHE_ESTATICO = 'precache-v1'
@@ -115,7 +115,7 @@ self.addEventListener('sync', (event) => {
     console.log(prefix)
 
     // Abre a conexão com o Indexed DB por Promise
-    obterIndexDB(dbStoreToken)
+    obterIndexDB(idbToken)
     // encadeamento da recuperação do token
     .then((dados)=> {
         return  dados[0]
@@ -153,13 +153,18 @@ self.addEventListener('sync', (event) => {
             fetch(baseURL, config)
                 // Retorno é modificao para JSON
                 .then((response) => {
+                    if(response.status == 204){
+                        
+                        //throw new Error('Não há relatórios para este Id.')     
+                        throw new Error('null')     
+                    }
                     return response.json()
                 })
                 // Formato JSON é armazenado no Indexed DB
                 .then((relatorios)=> {
                     console.log(prefix + "Dados recuperados", relatorios)
                     relatorios.map(relatorio => {
-                        armazenarIndexDB(dbStoreBS, relatorio)
+                        armazenarIndexDB(idbRelatorios, relatorio)
                     })
                 })
                 // Comunica sucesso para aplicação
@@ -168,13 +173,19 @@ self.addEventListener('sync', (event) => {
                 })
                 // Em caso de ERRO
                 .catch((err) => {
-                    console.log(prefix + "Erro na recuperação", err)
-                    informar('backsync fail')
+                    
+                    if (err.message === 'null'){
+                        console.log(prefix + "Não há relatórios para este ID")
+                        informar('null')
+                    } else{
+                        console.log(prefix + "Erro na recuperação", err)
+                        informar('backsync fail')
+                    }
+                   
                 })
         }
     })
     .catch((err) => {
         console.log('[SW]: erro', err)
-        informar(err)
     })  
 })

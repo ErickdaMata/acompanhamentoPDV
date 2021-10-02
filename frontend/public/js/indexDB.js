@@ -1,60 +1,60 @@
-// Definições do Banco de Dados
+// Definicoes do Banco de Dados
 const nomeDB = 'pwaStore'
-const dbStoreToken = 'token'
-const dbStoreBS = 'relatorios'
+const idbToken = 'token'
+const idbRelatorios = 'relatorios'
 const versaoDB = '1'
 
-// Abertura da conexão com Banco de Dados
+// Abertura da conexao com Banco de Dados
 const indexDB = idb.open(nomeDB, versaoDB, (db)=>{
 
-        // Caso não exita a coleção que armazena o Token
-        if(!db.objectStoreNames.contains(dbStoreToken)) {
-            // Cria a coleção
-            db.createObjectStore(dbStoreToken, {keyPath: 'id'})
+        // Caso nao exita a colecao que armazena o Token
+        if(!db.objectStoreNames.contains(idbToken)) {
+            // Cria a colecao
+            db.createObjectStore(idbToken, {keyPath: 'id'})
         }
-        // Caso exista a função de sincronização em segundo plano
+        // Caso exista a funcao de sincronizacao em segundo plano
         if('SyncManager' in window){
 
-            // E a coleção para relatórios ainda não exista
-            if(!db.objectStoreNames.contains(dbStoreBS)) {
-                // Cria a coleção que será usada pelo Service Worker para
-                // armazenamento dos relatórios no evento 'backsync'
-                db.createObjectStore(dbStoreBS, {keyPath: 'nome'})
+            // E a colecao para relatÃ³rios ainda nao exista
+            if(!db.objectStoreNames.contains(idbRelatorios)) {
+                // Cria a colecao que sera usada pelo Service Worker para
+                // armazenamento dos relatÃ³rios no evento 'backsync'
+                db.createObjectStore(idbRelatorios, {keyPath: 'apelido'})
             }
         }
     })
 
 
-// Armazena dados em uma coleção
+// Armazena dados em uma colecao
 const armazenarIndexDB = function (idStore, data) {
     // Retorna um objeto IndexedDB para permitir encadeamento de chamadas
     return indexDB
         // Encademaneto da Promise
         .then( (db) =>{
-            // Define uma transação
+            // Define uma transacao
             const transacao = db.transaction(idStore, 'readwrite')
-            // Define a transação para uma coleção
+            // Define a transacao para uma colecao
             const store = transacao.objectStore(idStore)
             // Armazena o dado
             store.put(data)
-            // Return somente será efetuado em caso de sucesso,
+            // Return somente sera efetuado em caso de sucesso,
             // passando para a Promise o resultado positivo
-            // '.complete' é propriedade do objeto db.transaction
+            // '.complete' para a propriedade do objeto db.transaction
             return transacao.complete
         })    
 }
 
-// Leitura da informação armazenada no IndexedDB
+// Leitura da informacao armazenada no IndexedDB
 const obterIndexDB = function (idStore) {
     // Retorna um objeto IndexedDB para permitir encadeamento de chamadas
     return indexDB
         // Encademaneto da Promise
         .then( (db) => {
-            // Define uma transação
+            // Define uma transacao
             const transacao = db.transaction(idStore, 'readonly')
-            // Define a transação para uma coleção
+            // Define a transacao para uma colecao
             const store = transacao.objectStore(idStore)
-            // Obtém todas as informações armazenadas na coleção
+            // Obtem todas as informacÃµes armazenadas na colecao
             return store.getAll()
         })
 }
@@ -66,15 +66,15 @@ const limparIndexDB = function (idStore) {
     return indexDB
         // Encademaneto da Promise
         .then( (db) =>{
-            // Define uma transação
+            // Define uma transacao
             const transacao = db.transaction(idStore, 'readwrite')
-            // Define a transação para uma coleção
+            // Define a transacao para uma colecao
             const store = transacao.objectStore(idStore)
-            // Executa a transação
+            // Executa a transacao
             store.clear()
-            // Return somente será efetuado em caso de sucesso,
+            // Return somente sera efetuado em caso de sucesso,
             // passando para a Promise o resultado positivo
-            // '.complete' é propriedade do objeto db.transaction
+            // '.complete' para propriedade do objeto db.transaction
             return transacao.complete
         })    
 }

@@ -81,13 +81,16 @@ const getUsuarioById = (id) => {
     //Retorna uma Promise que será invocada pelo Auth
     return new Promise(function (resolve, reject) {
         
+        // inicia uma direta na coleção, utilizando o Id
         const docId = gerentes.doc(id).get()
                         .then(doc => {
-                            
+                            // Caso o documento seja encontrado
                             if(doc.exists) {
-                                
+                                // Extrai os dados do documento
                                 return(doc.data())    
                             }
+                            // Caso não haja correspondência, o erro é
+                            // lançado e a Promise finalizada.
                             throw new Error('Id não encontrado.')
                         })
                         .then(gerente => {
@@ -97,7 +100,7 @@ const getUsuarioById = (id) => {
                                 senha: gerente.SENHA
                                 }
                                 
-                            //O usuário buscado do DB é retornado
+                            //O gerente buscado do DB é retornado como 'usuario'
                             resolve(usuario)
                         })
                         .catch( erro => {
@@ -134,10 +137,10 @@ const getRelatorios = (gerenteAutorizado) => {
                                         dth: doc.data().DTH_UPLOAD,
                                         rel: doc.data().REL,
                                     }
-
+                                    
                                     relatorios.push(relatorio)
                                 });
-
+                                
                                 //Retorna o array de documentos
                                 return relatorios
                             })
